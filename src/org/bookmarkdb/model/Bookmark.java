@@ -11,9 +11,8 @@ public class Bookmark {
 	private Date dateCreated;
 	private Date dateModified;
 
-
 	public Bookmark() {
-
+		this.tags = new ArrayList<String>();
 	}
 
 	public Bookmark(final String url, final String title, final String description, final String[] tags) {
@@ -21,7 +20,6 @@ public class Bookmark {
 		this.title = title;
 		this.description = description;
 		this.tags = new ArrayList<String>(tags);
-
 	}
 
 	// Getters
@@ -58,8 +56,8 @@ public class Bookmark {
 		this.title = title;
 	}
 
-	public void setDescription(final String desc) {
-		this.description = desc;
+	public void setDescription(final String description) {
+		this.description = description;
 	}
 
 	public void setTag() {
