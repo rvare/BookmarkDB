@@ -44,23 +44,57 @@ public class MainGui {
 
 		// Create menu bar
 		menuBar = new JMenuBar();
-
+	
+		// Create File menu and its items
 		JMenu fileMenu = new JMenu("File");
-		fileMenu.add(new JMenuItem("New"));
-		fileMenu.add(new JMenuItem("Open"));
-		fileMenu.add(new JMenuItem("Save"));
-		fileMenu.add(new JMenuItem("Save As"));
-		fileMenu.add(new JMenuItem("Export"));
 
+		JMenuItem newMenuItem = new JMenuItem("New");
+		newMenuItem.addActionListener(new menuNewItemListener());
+		fileMenu.add(newMenuItem);
+
+		JMenuItem openMenuItem = new JMenuItem("Open");
+		openMenuItem.addActionListener(new menuOpenListener());
+		fileMenu.add(openMenuItem);
+
+		JMenuItem saveMenuItem = new JMenuItem("Save");
+		saveMenuItem.addActionListener(new menuSaveListener());
+		fileMenu.add(saveMenuItem);
+
+		JMenuItem saveAsMenuItem = new JMenuItem("Save As");
+		saveAsMenuItem.addActionListener(new menuSaveAsListener());
+		fileMenu.add(saveAsMenuItem);
+
+		JMenuItem exportMenuItem = new JMenuItem("Export");
+		exportMenuItem.addActionListener(new menuExportListener());
+		fileMenu.add(exportMenuItem);
+
+		// Create Edit menu and its items
 		JMenu editMenu = new JMenu("Edit");
-		editMenu.add(new JMenuItem("Copy"));
-		editMenu.add(new JMenuItem("New Item"));
-		editMenu.add(new JMenuItem("Edit Item"));
 
+		JMenuItem copyMenuItem = new JMenuItem("Copy");
+		copyMenuItem.addActionListener(new menuCopyListener());
+		editMenu.add(copyMenuItem);
+
+		JMenuItem newItemMenuItem = new JMenuItem("New Item");
+		newItemMenuItem.addActionListener(new menuNewItemListener());
+		editMenu.add(newItemMenuItem);
+
+		JMenuItem editItemMenuItem = new JMenuItem("Edit Item");
+		editItemMenuItem.addActionListener(new menuEditItemListener());
+		editMenu.add(editItemMenuItem);
+
+		// Create Help menu and its items
 		JMenu helpMenu = new JMenu("Help");
-		helpMenu.add(new JMenuItem("Documentation"));
-		helpMenu.add(new JMenuItem("About"));
 
+		JMenuItem docMenuItem = new JMenuItem("Documentation");
+		docMenuItem.addActionListener(new menuDocumentationItemListener());
+		helpMenu.add(docMenuItem);
+
+		JMenuItem aboutMenuItem = new JMenuItem("About");
+		aboutMenuItem.addActionListener(new menuAboutItemListener());
+		helpMenu.add(aboutMenuItem);
+
+		// Add all menu items to the menu bar
 		menuBar.add(fileMenu);
 		menuBar.add(editMenu);
 		menuBar.add(helpMenu);
@@ -97,6 +131,7 @@ public class MainGui {
 		// TODO: Create list
 		// TODO: Clean up for better reading
 		TestItem[] item = {new TestItem("Test1", "Description"), new TestItem("Test2", "Description 2")};
+
 		itemList = new JList<TestItem>(item);
 		itemList.addListSelectionListener(new listListener());
 		mainFrame.getContentPane().add(BorderLayout.CENTER, itemList);
@@ -176,7 +211,67 @@ public class MainGui {
 	} // End of searchListener
 
 	// Menu bar listeners
+	class menuNewListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("new listener fired");
+		}
+	}
 
+	class menuOpenListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("open listener fired");
+		}
+	}
+
+	class menuSaveListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("save listener fired");
+		}
+	}
+
+	class menuSaveAsListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("save as listener fired");
+		}
+	}
+
+	class menuExportListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("export as listener fired");
+		}
+	}
+
+	class menuCopyListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("copy listener fired");
+		}
+	}
+
+	class menuNewItemListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("new item listener fired");
+		}
+	}
+
+	class menuEditItemListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("edit item listener fired");
+		}
+	}
+
+	class menuDocumentationItemListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("documentation item listener fired");
+		}
+	}
+
+	class menuAboutItemListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("about item listener fired");
+		}
+	}
+
+	// JList listener
 	// Note: The following code was made using this reference
 	// https://stackoverflow.com/questions/13800775/find-selected-item-of-a-jlist-and-display-it-in-real-time
 	class listListener implements ListSelectionListener {
