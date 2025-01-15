@@ -4,9 +4,9 @@ import org.bookmarkdb.view.MainGui;
 
 public class MainBookmarkDb {
 	public static void main(String[] args) {
-		System.out.println("Test");
+		// Model model = new Model();
 		MainGui view = new MainGui();
-		view.mainFrame.setVisible(true);
+		// Controller controller = new Controller(model, view);
+		view.showMainFrame();
 	}
-
 } // End of MainBookmarkDb
