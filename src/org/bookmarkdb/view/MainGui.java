@@ -50,22 +50,23 @@ public class MainGui {
 
 		JMenuItem newMenuItem = new JMenuItem("New");
 		newMenuItem.addActionListener(new menuNewItemListener());
-		fileMenu.add(newMenuItem);
 
 		JMenuItem openMenuItem = new JMenuItem("Open");
 		openMenuItem.addActionListener(new menuOpenListener());
-		fileMenu.add(openMenuItem);
 
 		JMenuItem saveMenuItem = new JMenuItem("Save");
 		saveMenuItem.addActionListener(new menuSaveListener());
-		fileMenu.add(saveMenuItem);
 
 		JMenuItem saveAsMenuItem = new JMenuItem("Save As");
 		saveAsMenuItem.addActionListener(new menuSaveAsListener());
-		fileMenu.add(saveAsMenuItem);
 
 		JMenuItem exportMenuItem = new JMenuItem("Export");
 		exportMenuItem.addActionListener(new menuExportListener());
+
+		fileMenu.add(newMenuItem);
+		fileMenu.add(openMenuItem);
+		fileMenu.add(saveMenuItem);
+		fileMenu.add(saveAsMenuItem);
 		fileMenu.add(exportMenuItem);
 
 		// Create Edit menu and its items
@@ -211,6 +212,7 @@ public class MainGui {
 	} // End of searchListener
 
 	// Menu bar listeners
+	// TODO Implement their functionality
 	class menuNewListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("new listener fired");
@@ -220,24 +222,35 @@ public class MainGui {
 	class menuOpenListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("open listener fired");
+			JFileChooser fileOpener = new JFileChooser();
+			fileOpener.showSaveDialog(mainFrame);
 		}
 	}
 
 	class menuSaveListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("save listener fired");
+			JFileChooser fileSaver = new JFileChooser();
+			fileSaver.showSaveDialog(mainFrame);
+			// saveFile using fileSaver
 		}
 	}
 
 	class menuSaveAsListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("save as listener fired");
+			JFileChooser fileSaver = new JFileChooser();
+			fileSaver.showOpenDialog(mainFrame);
+			// saveFile using fileSaver
 		}
 	}
 
 	class menuExportListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("export as listener fired");
+			JFileChooser fileExporter = new JFileChooser();
+			fileExporter.showSaveDialog(mainFrame);
+			// saveFile using fileSaver
 		}
 	}
 

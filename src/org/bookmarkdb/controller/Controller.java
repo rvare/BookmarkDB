@@ -8,6 +8,7 @@ public class Controller {
 	private final MainGui view;
 
 	public Controller(MainGui view) {
+		System.out.println("Controller constructor")
 		this.view = view;
 	}
 
