@@ -2,6 +2,7 @@ package org.bookmarkdb.model;
 
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Bookmark {
 	private String url;
@@ -12,14 +13,16 @@ public class Bookmark {
 	private Date dateModified;
 
 	public Bookmark() {
+		System.out.println("Defualt Bookmark constructor");
 		this.tags = new ArrayList<String>();
 	}
 
 	public Bookmark(final String url, final String title, final String description, final String[] tags) {
+		System.out.println("Non-Defualt Bookmark constructor");
 		this.url = url;
 		this.title = title;
 		this.description = description;
-		this.tags = new ArrayList<String>(tags);
+		this.tags = new ArrayList<String>(Arrays.asList(tags));
 	}
 
 	// Getters
