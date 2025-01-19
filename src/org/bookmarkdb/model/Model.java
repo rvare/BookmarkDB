@@ -16,7 +16,8 @@ public class Model {
 		avl_tree = new AVL_Tree();
 	}
 
-	public Bookmark getBookmarkByTag(String tag) {
+	// Getters
+	public Bookmark getBookmarksByTag(String tag) {
 		return new Bookmark();
 	}
 
@@ -33,18 +34,7 @@ public class Model {
 		return str;
 	}
 
-	public void addNewBookmark() {
-
-	}
-
-	public void addNewTag(String title, String new_tag) {
-
-	}
-
-	public void deleteBookmark(String title) {
-
-	}
-
+	// Setters
 	public void setBookmarkTitle(String oldTitle, String newTitle) {
 
 	}
@@ -65,6 +55,18 @@ public class Model {
 
 	}
 
+	// Operations
+	public void addNewBookmark() {
+
+	}
+
+	public void addNewTag(String title, String new_tag) {
+
+	}
+
+	public void deleteBookmark(String title) {
+
+	}
 	public void openFile() {
 
 	}
