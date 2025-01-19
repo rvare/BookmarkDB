@@ -4,14 +4,16 @@ import java.util.*;
 import java.io.*;
 
 import org.bookmarkdb.model.Bookmark;
+import org.bookmarkdb.model.AVL_Tree;
 
 public class Model {
 	private HashMap<String, Bookmark> tags;
-	// private BinarySearchTree binaryTree;
+	private AVL_Tree avl_tree;
 
 	public Model() {
 		System.out.println("Model constructor");
 		tags = new HashMap<String, Bookmark>();
+		avl_tree = new AVL_Tree();
 	}
 
 	public Bookmark getBookmarkByTag(String tag) {

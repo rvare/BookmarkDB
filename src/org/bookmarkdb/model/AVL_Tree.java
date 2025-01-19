@@ -151,6 +151,12 @@ public class AVL_Tree {
 
 		return y;
 	}
+
+	// Traversal methods
+	public void inOrderTraversal() {
+
+	}
+
 } // End AVL_Tree
 
 class AVL_Node {
@@ -189,6 +195,10 @@ class AVL_Node {
 	public int getBalance() {
 		return this.balanceFactor;
 	}
+	
+	public Bookmark getBookmark() {
+		return this.bookmark;
+	}
 
 	// Setters
 	public void setKey(String key) {
@@ -209,5 +219,9 @@ class AVL_Node {
 
 	public void setBalance(int balance) {
 		this.balanceFactor = balance;
+	}
+
+	public void setBookmark(Bookmark bookmark) {
+		this.bookmark = bookmark;
 	}
 } // End AVL_Node
