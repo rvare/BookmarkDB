@@ -16,18 +16,23 @@ public class AVL_Tree {
 	}
 
 	// AVL operations
-	public AVL_Node insert(AVL_Node leaf, String key) {
+	public AVL_Node insert(AVL_Node leaf, String key, Bookmark bookmark) {
+		if (this.root == null) this.root = new AVL_Node(key, bookmark);
+
 		if (leaf == null) {
-			leaf = new AVL_Node(key);
+			System.out.println(String.format("New bookmark inserted: %s", bookmark.getTitle()));
+			leaf = new AVL_Node(key, bookmark);
 			return leaf;
 		}
 		else if (leaf.getKey().compareTo(key) < 0) {
-			leaf.setLeftNode(insert(leaf.getLeftNode(), key));
+			leaf.setLeftNode(insert(leaf.getLeftNode(), key, bookmark));
 		}
 		else {
-			leaf.setRightNode(insert(leaf.getRightNode(), key));
+			leaf.setRightNode(insert(leaf.getRightNode(), key, bookmark));
 		}
+
 		leaf = rebalance(leaf);
+
 		return leaf;
 	}
 
@@ -103,7 +108,7 @@ public class AVL_Tree {
 			leaf.setLeftNode(rotateLeft(leaf.getLeftNode()));
 			return rotateRight(leaf);
 		}
-		if (leaf.getBalance() >= -2 && leaf.getLeftNode().getBalance() > 0) { // Right heavy, inside
+		if (leaf.getBalance() <= -2 && leaf.getLeftNode().getBalance() > 0) { // Right heavy, inside
 			leaf.setRightNode(rotateRight(leaf.getRightNode()));
 			return rotateRight(leaf);
 		}
@@ -171,8 +176,9 @@ class AVL_Node {
 
 	public AVL_Node() { } // Default constructor; does nothing
 
-	public AVL_Node(String data) {
+	public AVL_Node(String data, Bookmark bookmark) {
 		this.key = data;
+		this.bookmark = bookmark;
 	}
 
 	// Getters
