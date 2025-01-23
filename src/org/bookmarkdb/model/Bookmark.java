@@ -13,12 +13,12 @@ public class Bookmark {
 	private Date dateModified;
 
 	public Bookmark() {
-		System.out.println("Defualt Bookmark constructor");
+		System.out.println("    Defualt Bookmark constructor");
 		this.tags = new ArrayList<String>();
 	}
 
 	public Bookmark(String url, String title, String description, String[] tags) {
-		System.out.println("Non-Defualt Bookmark constructor");
+		System.out.println("    Non-Defualt Bookmark constructor");
 		this.url = url;
 		this.title = title;
 		this.description = description;
@@ -64,13 +64,25 @@ public class Bookmark {
 	}
 
 	public void setTag() {
+
 	}
 
 	public void setTagList() {
+
 	}
 
 	public void setDateModified(final Date dateModified) {
 		this.dateModified = dateModified;
+	}
+
+	// Operations
+	public void addNewTag(final String newTag) {
+		this.tags.add(newTag);
+	}
+
+	@Override
+	public String toString() {
+		return String.format("URL: %s,\nTitle: %s,\nDescription: %s", this.url, this.title, this.description);
 	}
 
 } // End of Bookmark
