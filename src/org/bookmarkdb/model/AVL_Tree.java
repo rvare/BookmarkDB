@@ -17,20 +17,14 @@ public class AVL_Tree {
 
 	// AVL operations
 	public AVL_Node insert(AVL_Node leaf, String key, Bookmark bookmark) {
-		// if (this.root == null) this.root = new AVL_Node(key, bookmark);
-
 		if (leaf == null) {
-			System.out.println(String.format("New bookmark inserted: %s", bookmark.getTitle()));
 			leaf = new AVL_Node(key, bookmark);
 			return leaf;
 		}
-		// else if (leaf.getKey().compareTo(key) < 0) {
 		else if (key.compareTo(leaf.getKey()) < 0) {
-			System.out.println("Going left");
 			leaf.setLeftNode(insert(leaf.getLeftNode(), key, bookmark));
 		}
 		else {
-			System.out.println("Going right");
 			leaf.setRightNode(insert(leaf.getRightNode(), key, bookmark));
 		}
 
@@ -78,21 +72,17 @@ public class AVL_Tree {
 	} // End of deleteNode
 
 	public AVL_Node searchBookmark(AVL_Node leaf, String key) {
-		System.out.println("        In search bookmark");
 		AVL_Node foundBookmark;
 		
 		if (leaf == null) return null;
 
-		System.out.println(String.format("          %s", leaf.getKey()));
 		if (key.equals(leaf.getKey())) {
 			return leaf;
 		}
 		else if (key.compareTo(leaf.getKey()) < 0) {
-			System.out.println("          Left");
 			foundBookmark = searchBookmark(leaf.getLeftNode(), key);
 		}
 		else {
-			System.out.println("          Right");
 			foundBookmark = searchBookmark(leaf.getRightNode(), key);
 		}
 
