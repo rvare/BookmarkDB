@@ -2,6 +2,7 @@ package org.bookmarkdb.model;
 
 import java.util.*;
 import java.io.*;
+import org.json.*;
 
 import org.bookmarkdb.model.Bookmark;
 import org.bookmarkdb.model.AVL_Tree;
@@ -126,7 +127,20 @@ public class Model {
 
 	}
 
-	public void processJson() {
+	public Bookmark processJson(final String jsonLine) {
+		JSONObject jo = new JSONObject(jsonLine);
 
+		// System.out.println(String.format("JSON line: %s", jo)); // For debugging
+
+		String url = jo.getString("url");
+		String title = jo.getString("title");
+		String description = jo.getString("description");
+
+		JSONArray jsonTags = jo.getJSONArray("tags");
+		Object[] objArr = jsonTags.toList().toArray();
+
+		String[] strArr = Arrays.copyOf(objArr, objArr.length, String[].class);
+
+		return new Bookmark(url, title, description, strArr);
 	}
 } // End of Model class

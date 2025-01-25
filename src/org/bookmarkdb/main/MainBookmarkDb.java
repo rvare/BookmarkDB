@@ -79,6 +79,9 @@ public class MainBookmarkDb {
 		model.setBookmarkURL("Cool site", "url2");
 		System.out.println(String.format("    Main: Checking node: \n%s" , tB));
 
+		System.out.println("Testing external JSON library");
+		Bookmark tB2 = model.processJson("{\"url\": \"urlFromJson\", \"title\": \"bookmarkd from json\", \"description\":\"desc\", \"tags\":[\"tag11\",\"tag12\"]}");
+
 		view.showMainFrame();
 	}
 } // End of MainBookmarkDb
