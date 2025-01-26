@@ -2,6 +2,9 @@ package org.bookmarkdb.model;
 
 import java.util.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
 import org.json.*;
 
 import org.bookmarkdb.model.Bookmark;
@@ -91,6 +94,7 @@ public class Model {
 	}
 
 	// Operations
+	// TODO: Rewrite this so that it uses two threads, one for AVL_Tree insertion and one for tagIndex insertrion
 	public void addNewBookmark(final String key, final Bookmark bookmark) {
 		// System.out.println("    addNewBookmark");
 		// System.out.println("      Is root null?");
@@ -123,8 +127,23 @@ public class Model {
 		}
 	}
 
-	public void openFile() {
+	public JSONArray openFile(final String filePath) {
+		try {
+			// String jsonFileContents = new String(Files.readAllBytes(Paths.get(filePath)), StandardCharsets.UTF_8);
+			String jsonFileContents = Files.readString(Paths.get(filePath));
+			JSONArray bookmarkJSONArray = new JSONArray(jsonFileContents);
+			System.out.println(bookmarkJSONArray);
 
+			return bookmarkJSONArray;
+		}
+		catch(IOException e) {
+			System.out.println("Failed");
+			System.out.println(e.getMessage());
+		}
+		catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
 	}
 
 	public Bookmark processJson(final String jsonLine) {
@@ -142,5 +161,31 @@ public class Model {
 		String[] strArr = Arrays.copyOf(objArr, objArr.length, String[].class);
 
 		return new Bookmark(url, title, description, strArr);
+	}
+
+	public Bookmark processJson(final JSONObject jsonObj) {
+		String url = jsonObj.getString("url");
+		String title = jsonObj.getString("title");
+		String description = jsonObj.getString("description");
+
+		JSONArray jsonTags = jsonObj.getJSONArray("tags");
+		Object[] objArr = jsonTags.toList().toArray();
+
+		String [] strArr = Arrays.copyOf(objArr, objArr.length, String[].class);
+
+		return new Bookmark(url, title, description, strArr);
+	}
+
+	public void inputDataFile(final String filePath) {
+		JSONArray jsonFileContents = openFile(filePath);
+
+		Bookmark bk;
+		Iterator iter = jsonFileContents.iterator();
+		while (iter.hasNext()) {
+			bk = processJson(iter.next().toString());
+			// System.out.println(iter.next().toString());
+			// System.out.println(bk);
+			addNewBookmark(bk.getTitle(), bk);
+		}
 	}
 } // End of Model class

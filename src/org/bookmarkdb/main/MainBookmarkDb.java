@@ -82,6 +82,11 @@ public class MainBookmarkDb {
 		System.out.println("Testing external JSON library");
 		Bookmark tB2 = model.processJson("{\"url\": \"urlFromJson\", \"title\": \"bookmarkd from json\", \"description\":\"desc\", \"tags\":[\"tag11\",\"tag12\"]}");
 
+		System.out.println("Main: Model processing JSON test");
+		Model model2 = new Model();
+		// model2.openFile("../test.json");
+		model2.inputDataFile("../test.json");
+
 		view.showMainFrame();
 	}
 } // End of MainBookmarkDb
