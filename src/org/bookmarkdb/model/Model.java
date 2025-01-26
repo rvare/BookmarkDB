@@ -5,6 +5,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import org.json.*;
 
 import org.bookmarkdb.model.Bookmark;
@@ -68,6 +69,7 @@ public class Model {
 		Bookmark bookmark = getBookmarkByTitle(oldTitle);
 		deleteBookmark(bookmark.getTitle());
 		bookmark.setTitle(newTitle);
+		bookmark.setDateModified(LocalDateTime.now());
 		addNewBookmark(newTitle, bookmark);
 	}
 
@@ -80,6 +82,7 @@ public class Model {
 		Bookmark bookmark = getBookmarkByTitle(title);
 		// System.out.println(bookmark.getDescription());
 		bookmark.setDescription(newDescription);
+		bookmark.setDateModified(LocalDateTime.now());
 		// System.out.println(bookmark.getDescription());
 	}
 
@@ -87,6 +90,7 @@ public class Model {
 		// System.out.println("    setBookmarkURL");
 		Bookmark bookmark = getBookmarkByTitle(title);
 		bookmark.setURL(newUrl);
+		bookmark.setDateModified(LocalDateTime.now());
 	}
 
 	public void setBookmarkDateModified(final String title, final Date date) {
@@ -111,6 +115,7 @@ public class Model {
 		// System.out.println("    addNewTag");
 		Bookmark bookmark = getBookmarkByTitle(title);
 		bookmark.addNewTag(newTag);
+		bookmark.setDateModified(LocalDateTime.now());
 	}
 
 	public void deleteBookmark(final String title) { 

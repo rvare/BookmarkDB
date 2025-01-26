@@ -1,6 +1,6 @@
 package org.bookmarkdb.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -9,8 +9,8 @@ public class Bookmark {
 	private String title;
 	private String description;
 	private ArrayList<String> tags;
-	private Date dateCreated;
-	private Date dateModified;
+	private LocalDateTime dateCreated;
+	private LocalDateTime dateModified;
 
 	public Bookmark() {
 		System.out.println("    Defualt Bookmark constructor");
@@ -23,6 +23,8 @@ public class Bookmark {
 		this.title = title;
 		this.description = description;
 		this.tags = new ArrayList<String>(Arrays.asList(tags));
+		this.dateCreated = LocalDateTime.now();
+		this.dateModified = LocalDateTime.now();
 	}
 
 	// Getters
@@ -42,11 +44,11 @@ public class Bookmark {
 		return this.tags;
 	}
 
-	public Date getDateCreated() {
+	public LocalDateTime getDateCreated() {
 		return this.dateCreated;
 	}
 
-	public Date getDateModified() {
+	public LocalDateTime getDateModified() {
 		return this.dateModified;
 	}
 	
@@ -71,7 +73,7 @@ public class Bookmark {
 
 	}
 
-	public void setDateModified(final Date dateModified) {
+	public void setDateModified(final LocalDateTime dateModified) {
 		this.dateModified = dateModified;
 	}
 
@@ -82,7 +84,8 @@ public class Bookmark {
 
 	@Override
 	public String toString() {
-		return String.format("URL: %s,\nTitle: %s,\nDescription: %s", this.url, this.title, this.description);
+		return String.format("URL: %s,\nTitle: %s,\nDescription: %s,\nTags: %s,\nDate Created: %s,\nDate Modified: %s",
+								this.url, this.title, this.description, this.tags, this.dateCreated, this.dateModified);
 	}
 
 } // End of Bookmark
