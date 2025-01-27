@@ -9,9 +9,11 @@ import java.time.LocalDateTime;
 import org.json.*;
 
 import org.bookmarkdb.model.Bookmark;
+import org.bookmarkdb.model.BookmarkException;
 import org.bookmarkdb.model.AVL_Tree;
 
 public class Model {
+	// TODO Change to be `final` so we can prevent accidental mutations
 	private HashMap<String, Bookmark> tagsIndex; // Change to use a list of some kind
 	private AVL_Tree avl_tree;
 
@@ -22,25 +24,25 @@ public class Model {
 	}
 
 	// Getters
-	public Bookmark getBookmarksByTag(final String tag) {
+	public Bookmark getBookmarksByTag(final String tag) throws BookmarkException { // TODO Modify to use a list in the hashmap
 		// System.out.println(String.format("    Getting bookmark by %s", tag));
 		Bookmark bookmark = tagsIndex.get(tag);
+
+		if (bookmark == null) {
+			throw new BookmarkException("Could not find bookmark by tag");
+		}
+
 		return bookmark;
 	}
 
-	public Bookmark getBookmarkByTitle(final String title) {
+	public Bookmark getBookmarkByTitle(final String title) throws BookmarkException {
 		// System.out.println("    In getBookmarkByTitle");
 		// System.out.println("    Is root null?");
 		// System.out.println(avl_tree.getRoot());
 		AVL_Node node = avl_tree.searchBookmark(avl_tree.getRoot(), title);
 
-		// TODO Handle the case in which the bookmark does not exists. Might need to throw an error.
 		if (node == null) {
-			// System.out.println("    Not found");
-			Bookmark bookmark = new Bookmark();
-			bookmark.setTitle("DNE");
-			bookmark.setDescription("DNE");
-			return bookmark;
+			throw new BookmarkException("Bookmark by title not found.");
 		}
 
 		// System.out.println("        Checking sides");
@@ -64,9 +66,12 @@ public class Model {
 	// Setters
 	// TODO Implement all setters
 	// TODO Call setDateModified to all setters
-	public void setBookmarkTitle(final String oldTitle, final String newTitle) {
+	// TODO Modify to handle the exception of bookmark DNE
+	public void setBookmarkTitle(final String oldTitle, final String newTitle) throws BookmarkException {
 		// System.out.println("    setBookmarkTitle");
-		Bookmark bookmark = getBookmarkByTitle(oldTitle);
+
+		Bookmark bookmark = getBookmarkByTitle(oldTitle); // This statement throws an exception
+
 		deleteBookmark(bookmark.getTitle());
 		bookmark.setTitle(newTitle);
 		bookmark.setDateModified(LocalDateTime.now());
@@ -77,16 +82,16 @@ public class Model {
 
 	}
 
-	public void setBookmarkDescription(final String title, final String newDescription) {
+	public void setBookmarkDescription(final String title, final String newDescription) throws BookmarkException {
 		// System.out.println("    setBookmarkDescription");
-		Bookmark bookmark = getBookmarkByTitle(title);
+		Bookmark bookmark = getBookmarkByTitle(title); // Throws exception
 		// System.out.println(bookmark.getDescription());
 		bookmark.setDescription(newDescription);
 		bookmark.setDateModified(LocalDateTime.now());
 		// System.out.println(bookmark.getDescription());
 	}
 
-	public void setBookmarkURL(final String title, final String newUrl) {
+	public void setBookmarkURL(final String title, final String newUrl) throws BookmarkException {
 		// System.out.println("    setBookmarkURL");
 		Bookmark bookmark = getBookmarkByTitle(title);
 		bookmark.setURL(newUrl);
@@ -111,14 +116,14 @@ public class Model {
 		}
 	}
 
-	public void addNewTag(final String title, final String newTag) {
+	public void addNewTag(final String title, final String newTag) throws BookmarkException {
 		// System.out.println("    addNewTag");
 		Bookmark bookmark = getBookmarkByTitle(title);
 		bookmark.addNewTag(newTag);
 		bookmark.setDateModified(LocalDateTime.now());
 	}
 
-	public void deleteBookmark(final String title) { 
+	public void deleteBookmark(final String title) throws BookmarkException {
 		// System.out.println("    deleteBookmark");
 		Bookmark bookmark = getBookmarkByTitle(title);
 		// System.out.println("      Delete in AVL tree");

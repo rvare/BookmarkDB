@@ -30,53 +30,81 @@ public class MainBookmarkDb {
 		System.out.println("  Insert 3rd bookmark");
 		model.addNewBookmark(b3.getTitle(), b3);
 
-
+		Bookmark tB = null;
 		System.out.println("===");
-		System.out.println("Main: Testing search by title");
-		System.out.println("  Get 1st bookmark:");
-		Bookmark tB = model.getBookmarkByTitle("First bookmark");
-		System.out.println(String.format("    Main: Checking node: \n%s" , tB));
-		System.out.println("  Get 2nd bookmark:");
-		tB = model.getBookmarkByTitle("Second bookmark");
-		System.out.println(String.format("    Main: Checking node: \n%s" , tB));
-		System.out.println("  Get 3rd bookmark:");
-		tB = model.getBookmarkByTitle("Third bookmark");
-		System.out.println(String.format("    Main: Checking node: \n%s" , tB));
-
+		try {
+			System.out.println("Main: Testing search by title");
+			System.out.println("  Get 1st bookmark:");
+			tB = model.getBookmarkByTitle("First bookmark");
+			System.out.println(String.format("    Main: Checking node: \n%s" , tB));
+			System.out.println("  Get 2nd bookmark:");
+			tB = model.getBookmarkByTitle("Second bookmark");
+			System.out.println(String.format("    Main: Checking node: \n%s" , tB));
+			System.out.println("  Get 3rd bookmark:");
+			tB = model.getBookmarkByTitle("Third bookmark");
+			System.out.println(String.format("    Main: Checking node: \n%s" , tB));
+		}
+		catch (BookmarkException bkException) {
+			System.out.println(bkException.getMessage());
+		}
 
 		System.out.println("===");
 		System.out.println("Main: Get tags");
 		String tagsStuff = model.getTags();
 		System.out.println(tagsStuff);
 
-
-		System.out.println("===");
-		System.out.println("Main: Get bookmark by tag");
-		System.out.println("  Main: Get 1st bookmark:");
-		tB = model.getBookmarksByTag("tag1");
-		System.out.println(String.format("    Main: Checking node: \n%s" , tB));
-		System.out.println("  Main: Get 2nd bookmark:");
-		tB = model.getBookmarksByTag("tag3");
-		System.out.println(String.format("    Main: Checking node: \n%s" , tB));
-		System.out.println("  Main: Get 3rd bookmark:");
-		tB = model.getBookmarksByTag("tag5");
-		System.out.println(String.format("    Main: Checking node: \n%s" , tB));
-
+		try {
+			System.out.println("===");
+			System.out.println("Main: Get bookmark by tag");
+			System.out.println("  Main: Get 1st bookmark:");
+			tB = model.getBookmarksByTag("tag1");
+			System.out.println(String.format("    Main: Checking node: \n%s" , tB));
+			System.out.println("  Main: Get 2nd bookmark:");
+			tB = model.getBookmarksByTag("tag3");
+			System.out.println(String.format("    Main: Checking node: \n%s" , tB));
+			System.out.println("  Main: Get 3rd bookmark:");
+			tB = model.getBookmarksByTag("tag5");
+			System.out.println(String.format("    Main: Checking node: \n%s" , tB));
+		}
+		catch (BookmarkException bkException) {
+			System.out.println(bkException.getMessage());
+		}
 		System.out.println("==Get second bookmark first==");
-		tB = model.getBookmarkByTitle("Second bookmark");
-		System.out.println(String.format("Checking node:\n%s" , tB));
+		try {
+			tB = model.getBookmarkByTitle("Second bookmark");
+			System.out.println(String.format("Checking node:\n%s" , tB));
+		}
+		catch (BookmarkException bkException) {
+			System.out.println(bkException.getMessage());
+		}
+
 		System.out.println("===");
 		System.out.println("Main: Testing setters");
 		System.out.println("  Main: Change bookmark title");
 		// System.out.println("   Did we get it?");
-		model.setBookmarkTitle("Second bookmark", "Cool site");
-		tB = model.getBookmarkByTitle("Cool site");
+		try {
+			model.setBookmarkTitle("Second bookmark", "Cool site");
+			tB = model.getBookmarkByTitle("Cool site");
+		}
+		catch (BookmarkException bkException) {
+			System.out.println(bkException.getMessage());
+		}
 		System.out.println(String.format("    Main: Checking node: \n%s" , tB));
 		System.out.println("  Main: Change bookmark description");
-		model.setBookmarkDescription("Cool site", "A really cool website");
+		try {
+			model.setBookmarkDescription("Cool site", "A really cool website");
+		}
+		catch (BookmarkException bkException) {
+			System.out.println(bkException.getMessage());
+		}
 		System.out.println(String.format("    Main: Checking node: \n%s" , tB));
 		System.out.println("  Main: Change bookmark URL");
-		model.setBookmarkURL("Cool site", "url2");
+		try {
+			model.setBookmarkURL("Cool site", "url2");
+		}
+		catch (BookmarkException bkException) {
+			System.out.println(bkException.getMessage());
+		}
 		System.out.println(String.format("    Main: Checking node: \n%s" , tB));
 
 		System.out.println("Testing external JSON library");
