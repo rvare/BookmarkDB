@@ -2,6 +2,7 @@ package org.bookmarkdb.main;
 
 import org.bookmarkdb.view.MainGui;
 import org.bookmarkdb.model.*;
+import java.util.LinkedList;
 
 import java.util.Arrays;
 
@@ -16,7 +17,7 @@ public class MainBookmarkDb {
 		String[] tagArr1 = {"tag1", "tag2"};
 		Bookmark b1 = new Bookmark("url1", "First bookmark", "The first", tagArr1);
 
-		String[] tagArr2 = {"tag3", "tag4"};
+		String[] tagArr2 = {"tag2", "tag3", "tag4"};
 		Bookmark b2 = new Bookmark("url2", "Second bookmark", "The 2nd", tagArr2);
 
 		String[] tagArr3 = {"tag5", "tag6"};
@@ -31,6 +32,7 @@ public class MainBookmarkDb {
 		model.addNewBookmark(b3.getTitle(), b3);
 
 		Bookmark tB = null;
+		LinkedList<Bookmark> bkList;
 		System.out.println("===");
 		try {
 			System.out.println("Main: Testing search by title");
@@ -57,14 +59,16 @@ public class MainBookmarkDb {
 			System.out.println("===");
 			System.out.println("Main: Get bookmark by tag");
 			System.out.println("  Main: Get 1st bookmark:");
-			tB = model.getBookmarksByTag("tag1");
-			System.out.println(String.format("    Main: Checking node: \n%s" , tB));
+			bkList = model.getBookmarksByTag("tag1");
+			System.out.println(String.format("    Main: Checking node: \n%s" , bkList));
+			bkList = model.getBookmarksByTag("tag2");
+			System.out.println(String.format("    Main: Checking node: \n%s" , bkList));
 			System.out.println("  Main: Get 2nd bookmark:");
-			tB = model.getBookmarksByTag("tag3");
-			System.out.println(String.format("    Main: Checking node: \n%s" , tB));
+			bkList = model.getBookmarksByTag("tag3");
+			System.out.println(String.format("    Main: Checking node: \n%s" , bkList));
 			System.out.println("  Main: Get 3rd bookmark:");
-			tB = model.getBookmarksByTag("tag5");
-			System.out.println(String.format("    Main: Checking node: \n%s" , tB));
+			bkList = model.getBookmarksByTag("tag5");
+			System.out.println(String.format("    Main: Checking node: \n%s" , bkList));
 		}
 		catch (BookmarkException bkException) {
 			System.out.println(bkException.getMessage());

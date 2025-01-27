@@ -13,25 +13,24 @@ import org.bookmarkdb.model.BookmarkException;
 import org.bookmarkdb.model.AVL_Tree;
 
 public class Model {
-	// TODO Change to be `final` so we can prevent accidental mutations
-	private final HashMap<String, Bookmark> tagsIndex; // Change to use a list of some kind
+	private final HashMap<String, LinkedList<Bookmark>> tagsIndex; // Change to use a list of some kind
 	private final AVL_Tree avl_tree;
 
 	public Model() {
 		System.out.println("Model constructor");
-		tagsIndex = new HashMap<String, Bookmark>();
+		tagsIndex = new HashMap<String, LinkedList<Bookmark>>();
 		avl_tree = new AVL_Tree();
 	}
 
 	// Getters
-	public Bookmark getBookmarksByTag(final String tag) throws BookmarkException { // TODO Modify to use a list in the hashmap
-		Bookmark bookmark = tagsIndex.get(tag);
+	public LinkedList<Bookmark> getBookmarksByTag(final String tag) throws BookmarkException {
+		LinkedList<Bookmark> bucket = tagsIndex.get(tag);
 
-		if (bookmark == null) {
+		if (bucket == null) {
 			throw new BookmarkException("Could not find bookmark by tag");
 		}
 
-		return bookmark;
+		return bucket;
 	}
 
 	public Bookmark getBookmarkByTitle(final String title) throws BookmarkException {
@@ -94,8 +93,13 @@ public class Model {
 		avl_tree.setRoot(avl_tree.insert(avl_tree.getRoot(), key, bookmark));
 		ArrayList<String> tags = bookmark.getTags();
 
-		for (String i : tags) {
-			tagsIndex.put(i, bookmark);
+		for (String tag : tags) {
+			if (tagsIndex.containsKey(tag) == false) {
+				tagsIndex.put(tag, new LinkedList<Bookmark>());
+			}
+
+			LinkedList<Bookmark> bucket = tagsIndex.get(tag);
+			bucket.add(bookmark);
 		}
 	}
 
