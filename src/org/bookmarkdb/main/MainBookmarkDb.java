@@ -70,8 +70,8 @@ public class MainBookmarkDb {
 			bkList = model.getBookmarksByTag("tag5");
 			System.out.println(String.format("    Main: Checking node: \n%s" , bkList));
 		}
-		catch (BookmarkException bkException) {
-			System.out.println(bkException.getMessage());
+		catch (NoTagException noTagEx) {
+			System.out.println(noTagEx.getMessage());
 		}
 		System.out.println("==Get second bookmark first==");
 		try {

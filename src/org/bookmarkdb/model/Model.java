@@ -10,6 +10,7 @@ import org.json.*;
 
 import org.bookmarkdb.model.Bookmark;
 import org.bookmarkdb.model.BookmarkException;
+import org.bookmarkdb.model.NoTagException;
 import org.bookmarkdb.model.AVL_Tree;
 
 public class Model {
@@ -23,11 +24,11 @@ public class Model {
 	}
 
 	// Getters
-	public LinkedList<Bookmark> getBookmarksByTag(final String tag) throws BookmarkException {
+	public LinkedList<Bookmark> getBookmarksByTag(final String tag) throws NoTagException {
 		LinkedList<Bookmark> bucket = tagsIndex.get(tag);
 
 		if (bucket == null) {
-			throw new BookmarkException("Could not find bookmark by tag");
+			throw new NoTagException("Could not find bookmark by tag");
 		}
 
 		return bucket;
