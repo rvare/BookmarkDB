@@ -156,8 +156,12 @@ public class AVL_Tree {
 	}
 
 	// Traversal methods
-	public void inOrderTraversal() {
-
+	public void inOrderTraversal(AVL_Node leaf) {
+		if (leaf != null) {
+			inOrderTraversal(leaf.getLeftNode());
+			System.out.println(leaf.getKey());
+			inOrderTraversal(leaf.getRightNode());
+		}
 	}
 
 } // End AVL_Tree

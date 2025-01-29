@@ -5,6 +5,7 @@ import org.bookmarkdb.model.*;
 import java.util.LinkedList;
 
 import java.util.Arrays;
+import java.io.*;
 
 public class MainBookmarkDb {
 	public static void main(String[] args) {
@@ -117,7 +118,33 @@ public class MainBookmarkDb {
 		System.out.println("Main: Model processing JSON test");
 		Model model2 = new Model();
 		// model2.openFile("../test.json");
-		model2.inputDataFile("../test.json");
+		try {
+			model2.inputDataFile("../test.json");
+		}
+		catch (IOException ioEx) {
+			System.out.println(ioEx.getMessage());
+		}
+
+		try {
+			System.out.println("Here");
+			tB = model2.getBookmarkByTitle("Fourth bookmark");
+		}
+		catch (BookmarkException bkException) {
+			System.out.println("Nope");
+		}
+
+		System.out.println("Get all bookmarks");
+		model2.getAllBookmarks();
+
+		System.out.println("Change one bookmark and get all again");
+		try {
+			model2.setBookmarkTitle("Second bookmark", "Cool site");
+		}
+		catch (BookmarkException bkException) {
+			System.out.println(bkException.getMessage());
+		}
+
+		model2.getAllBookmarks();
 
 		view.showMainFrame();
 	}

@@ -45,7 +45,7 @@ public class Model {
 	}
 
 	public void getAllBookmarks() { // TODO Implement
-
+		avl_tree.inOrderTraversal(avl_tree.getRoot());
 	}
 
 	public String getTags() {
@@ -56,9 +56,6 @@ public class Model {
 	}
 
 	// Setters
-	// TODO Implement all setters
-	// TODO Call setDateModified to all setters
-	// TODO Modify to handle the exception of bookmark DNE
 	public void setBookmarkTitle(final String oldTitle, final String newTitle) throws BookmarkException {
 		Bookmark bookmark = getBookmarkByTitle(oldTitle); // This statement throws an exception
 
@@ -68,7 +65,7 @@ public class Model {
 		addNewBookmark(newTitle, bookmark);
 	}
 
-	public void setBookmarkTags(final String title, final String[] tags) {
+	public void setBookmarkTags(final String title, final String[] tags) { // Not sure if this is needed
 
 	}
 
@@ -84,7 +81,7 @@ public class Model {
 		bookmark.setDateModified(LocalDateTime.now());
 	}
 
-	public void setBookmarkDateModified(final String title, final Date date) {
+	public void setBookmarkDateModified(final String title, final Date date) { // Not sure if this is needed due to how the other methods are made
 
 	}
 
@@ -121,22 +118,12 @@ public class Model {
 		}
 	}
 
-	public JSONArray openFile(final String filePath) {
-		try {
-			String jsonFileContents = Files.readString(Paths.get(filePath));
-			JSONArray bookmarkJSONArray = new JSONArray(jsonFileContents);
-			System.out.println(bookmarkJSONArray);
+	public JSONArray openFile(final String filePath) throws IOException {
+		String jsonFileContents = Files.readString(Paths.get(filePath));
+		JSONArray bookmarkJSONArray = new JSONArray(jsonFileContents);
+		System.out.println(bookmarkJSONArray);
 
-			return bookmarkJSONArray;
-		}
-		catch(IOException e) {
-			System.out.println("Failed");
-			System.out.println(e.getMessage());
-		}
-		catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
-		return null;
+		return bookmarkJSONArray;
 	} // End of openFile
 
 	public Bookmark processJson(final String jsonLine) {
@@ -167,7 +154,7 @@ public class Model {
 		return new Bookmark(url, title, description, strArr);
 	} // End of processJson
 
-	public void inputDataFile(final String filePath) {
+	public void inputDataFile(final String filePath) throws IOException {
 		JSONArray jsonFileContents = openFile(filePath);
 
 		Bookmark bk;
