@@ -6,6 +6,8 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.io.*;
 
+import org.bookmarkdb.view.GuiForm;
+
 public class MainGui {
 
 	private JFrame mainFrame;
@@ -184,12 +186,16 @@ public class MainGui {
 	class newListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("new fire");
+			GuiForm guiForm = new GuiForm();
+			guiForm.setVisible(true);
 		}
 	} // End of newListener
 
 	class editListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("edit fire");
+			GuiForm guiForm = new GuiForm();
+			guiForm.setVisible(true);
 		}
 	} // End of editListener
 
