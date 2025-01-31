@@ -90,4 +90,4 @@ public class GuiForm extends JFrame {
 			dispose();
 		}
 	}
-} // End of GuiForm:x
+} // End of GuiForm
