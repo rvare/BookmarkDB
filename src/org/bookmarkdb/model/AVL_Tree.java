@@ -127,6 +127,8 @@ public class AVL_Tree {
 		return -1;
 	} // End height
 
+	// TODO: Change these to not be one character variables names
+	// Rotation methods
 	public AVL_Node rotateLeft(AVL_Node x) {
 		AVL_Node y = x.getRightNode();
 		AVL_Node z = y.getLeftNode();
@@ -163,7 +165,6 @@ public class AVL_Tree {
 			inOrderTraversal(leaf.getRightNode());
 		}
 	}
-
 } // End AVL_Tree
 
 class AVL_Node {
@@ -209,27 +210,27 @@ class AVL_Node {
 	}
 
 	// Setters
-	public void setKey(String key) {
+	public void setKey(final String key) {
 		this.key = key;
 	}
 
-	public void setLeftNode(AVL_Node newLeft) {
+	public void setLeftNode(final AVL_Node newLeft) {
 		this.leftNode = newLeft;
 	}
 
-	public void setRightNode(AVL_Node newRight) {
+	public void setRightNode(final AVL_Node newRight) {
 		this.rightNode = newRight;
 	}
 
-	public void setHeight(int height) {
+	public void setHeight(final int height) {
 		this.height = height;
 	}
 
-	public void setBalance(int balance) {
+	public void setBalance(final int balance) {
 		this.balanceFactor = balance;
 	}
 
-	public void setBookmark(Bookmark bookmark) {
+	public void setBookmark(final Bookmark bookmark) {
 		this.bookmark = bookmark;
 	}
 } // End AVL_Node

@@ -7,8 +7,8 @@ import javax.swing.event.*;
 import java.io.*;
 import java.util.*;
 
-public class GuiForm extends JFrame {
-
+public class GuiForm extends JFrame { // TODO: Change to JDialogue because it'll stop once it opens
+	// These four strings will be used to capture the data and to be converted to JSON
 	private String url;
 	private String title;
 	private String description;
@@ -16,8 +16,6 @@ public class GuiForm extends JFrame {
 
 	private Date dateCreated;
 	private Date dateModified;
-
-	// private JFram guiFormFrame;
 
 	private JButton buttonSave;
 	private JButton buttonCancel;
@@ -32,6 +30,7 @@ public class GuiForm extends JFrame {
 		System.out.println("GuiForm constructor");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+		// Form elements: fields and labels
 		JPanel formPanel = new JPanel();
 		formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
 		getContentPane().add(BorderLayout.CENTER, formPanel);
@@ -64,6 +63,7 @@ public class GuiForm extends JFrame {
 		tagsBox.add(textFieldTags);
 		formPanel.add(tagsBox);
 
+		// Form buttons
 		JPanel formButtonPanel = new JPanel();
 		buttonSave = new JButton("Save");
 		buttonSave.addActionListener(new saveListener());
@@ -76,7 +76,9 @@ public class GuiForm extends JFrame {
 		setSize(500, 300);
 	} // End constructor
 
+	// TODO: Get rid of dispose and make it so that save will return a string in JSON format
 	// Internal classes
+	// NOTE: This class will go to the controller and handle the saving of the data but the button that constructs the form won't do that
 	class saveListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("GuiForm save button fired");

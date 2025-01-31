@@ -17,7 +17,7 @@ public class Bookmark {
 		this.tags = new ArrayList<String>();
 	}
 
-	public Bookmark(String url, String title, String description, String[] tags) {
+	public Bookmark(final String url, final String title, final String description, String[] tags) {
 		System.out.println("    Non-Defualt Bookmark constructor");
 		this.url = url;
 		this.title = title;
@@ -87,5 +87,4 @@ public class Bookmark {
 		return String.format("(Title: %s,\nURL: %s,\nDescription: %s,\nTags: %s,\nDate Created: %s,\nDate Modified: %s)",
 								this.title, this.url, this.description, this.tags, this.dateCreated, this.dateModified);
 	}
-
 } // End of Bookmark

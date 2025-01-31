@@ -10,7 +10,6 @@ import org.bookmarkdb.view.GuiForm;
 import org.bookmarkdb.view.ListMenuItem;
 
 public class MainGui {
-
 	private JFrame mainFrame;
 
 	// Menu bar
@@ -223,14 +222,13 @@ public class MainGui {
 	public void showMainFrame() {
 		mainFrame.setVisible(true);
 	}
-
 } // End of MainGui
 
 class TestItem {
 	private String itemName;
 	private String itemDescription;
 
-	public TestItem(String itemName, String desc) {
+	public TestItem(final String itemName, final String desc) {
 		this.itemName = itemName;
 		this.itemDescription = desc;
 	}

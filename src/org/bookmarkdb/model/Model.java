@@ -14,7 +14,7 @@ import org.bookmarkdb.model.NoTagException;
 import org.bookmarkdb.model.AVL_Tree;
 
 public class Model {
-	private final HashMap<String, LinkedList<Bookmark>> tagsIndex; // Change to use a list of some kind
+	private final HashMap<String, LinkedList<Bookmark>> tagsIndex;
 	private final AVL_Tree avl_tree;
 
 	public Model() {
@@ -44,7 +44,7 @@ public class Model {
 		return node.getBookmark();
 	}
 
-	public void getAllBookmarks() { // TODO Implement
+	public void getAllBookmarks() { // TODO Implement such that it returns something that JList can use
 		avl_tree.inOrderTraversal(avl_tree.getRoot());
 	}
 
@@ -57,7 +57,7 @@ public class Model {
 
 	// Setters
 	public void setBookmarkTitle(final String oldTitle, final String newTitle) throws BookmarkException {
-		Bookmark bookmark = getBookmarkByTitle(oldTitle); // This statement throws an exception
+		Bookmark bookmark = getBookmarkByTitle(oldTitle); // This line throws a BookmarkException
 
 		deleteBookmark(bookmark.getTitle());
 		bookmark.setTitle(newTitle);
@@ -70,13 +70,13 @@ public class Model {
 	}
 
 	public void setBookmarkDescription(final String title, final String newDescription) throws BookmarkException {
-		Bookmark bookmark = getBookmarkByTitle(title); // Throws exception
+		Bookmark bookmark = getBookmarkByTitle(title); // This line throws a BookmarkException
 		bookmark.setDescription(newDescription);
 		bookmark.setDateModified(LocalDateTime.now());
 	}
 
 	public void setBookmarkURL(final String title, final String newUrl) throws BookmarkException {
-		Bookmark bookmark = getBookmarkByTitle(title);
+		Bookmark bookmark = getBookmarkByTitle(title); // This line throws a BookmarkException
 		bookmark.setURL(newUrl);
 		bookmark.setDateModified(LocalDateTime.now());
 	}
@@ -102,18 +102,18 @@ public class Model {
 	}
 
 	public void addNewTag(final String title, final String newTag) throws BookmarkException {
-		Bookmark bookmark = getBookmarkByTitle(title);
+		Bookmark bookmark = getBookmarkByTitle(title); // This line throws a BookmarkException
 		bookmark.addNewTag(newTag);
 		bookmark.setDateModified(LocalDateTime.now());
 	}
 
 	public void deleteBookmark(final String title) throws BookmarkException {
-		Bookmark bookmark = getBookmarkByTitle(title);
+		Bookmark bookmark = getBookmarkByTitle(title); // This line throws a BookmarkException
 		avl_tree.deleteNode(avl_tree.getRoot(), title);
 
 		ArrayList<String> bookmarkTags = bookmark.getTags();
 
-		for (String i : bookmarkTags) {
+		for (String i : bookmarkTags) { // TODO: Fix this so it doesn't remove a tag when there's a list there. Only remove when null.
 			tagsIndex.remove(i);
 		}
 	}
@@ -155,7 +155,7 @@ public class Model {
 	} // End of processJson
 
 	public void inputDataFile(final String filePath) throws IOException {
-		JSONArray jsonFileContents = openFile(filePath);
+		JSONArray jsonFileContents = openFile(filePath); // This line throws an IOException
 
 		Bookmark bk;
 		Iterator iter = jsonFileContents.iterator();

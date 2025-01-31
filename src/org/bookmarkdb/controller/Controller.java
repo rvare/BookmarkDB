@@ -1,16 +1,15 @@
 package org.bookmarkdb.controller;
 
-import org.bookmarkdb.model.*;
-import org.bookmarkdb.view.*;
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.io.*;
 
-public class Controller {
+import org.bookmarkdb.model.*;
+import org.bookmarkdb.view.*;
 
+public class Controller {
 	private final MainGui view;
 	private final Model model;
 
@@ -45,11 +44,13 @@ public class Controller {
 	}
 
 	// Inner classes
+	// Button listeners
 	class newButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("new fired");
 			GuiForm guiForm = new GuiForm();
 			guiForm.setVisible(true);
+			System.out.println("Does this run after window shows?");
 		}
 	} // End of newListener
 
@@ -167,5 +168,4 @@ public class Controller {
 			}
 		}
 	} // End of listListener
-
 } // End of Controller
