@@ -13,6 +13,10 @@ public class ListMenuItem {
 	public String toString() {
 		return this.itemName;
 	}
+
+	public String getItemName() {
+		return this.itemName;
+	}
 	
 	public String getDescription() {
 		return this.itemDescription;

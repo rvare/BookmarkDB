@@ -6,6 +6,9 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.io.*;
 import java.util.LinkedList;
+import java.awt.datatransfer.StringSelection;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
 
 import org.bookmarkdb.model.*;
 import org.bookmarkdb.view.*;
@@ -38,6 +41,7 @@ public class Controller {
 		this.view.addNewButtonListener(new newButtonListener());
 		this.view.addEditButtonListener(new editButtonListener());
 		this.view.addDeleteButtonListener(new deleteButtonListener());
+		this.view.addCopyButtonListener(new copyButtonListener());
 		this.view.addSearchButtonListener(new searchButtonListener());
 
 		// List listener
@@ -67,6 +71,16 @@ public class Controller {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("copy fired");
 			// Add actions
+			ListMenuItem item = view.getItemList().getSelectedValue();
+			try {
+				Bookmark bookmark = model.getBookmarkByTitle(item.getItemName()); // Throws exception
+				StringSelection urlString = new StringSelection(bookmark.getURL());
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				clipboard.setContents(urlString, urlString);
+			}
+			catch(BookmarkException bkException) {
+				System.out.println(bkException.getMessage());
+			}
 		}
 	} // End of copyListener
 
@@ -98,7 +112,7 @@ public class Controller {
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.showOpenDialog(view.getMainFrame());
 
-			// TODO: Change to handle errors and stuff
+			// TODO: Change to handle errors properly
 			System.out.println(fileChooser.getSelectedFile().getAbsolutePath());
 			try {
 				model.inputDataFile(fileChooser.getSelectedFile().getAbsolutePath());
