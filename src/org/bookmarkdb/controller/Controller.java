@@ -5,6 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.io.*;
+import java.util.LinkedList;
 
 import org.bookmarkdb.model.*;
 import org.bookmarkdb.view.*;
@@ -94,10 +95,36 @@ public class Controller {
 	class menuOpenListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("open listener fired");
-			JFileChooser fileOpener = new JFileChooser();
-			fileOpener.showSaveDialog(view.getMainFrame());
-		}
-	}
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.showOpenDialog(view.getMainFrame());
+
+			// TODO: Change to handle errors and stuff
+			System.out.println(fileChooser.getSelectedFile().getAbsolutePath());
+			try {
+				model.inputDataFile(fileChooser.getSelectedFile().getAbsolutePath());
+
+				LinkedList<Bookmark> bookmarkQueue = model.getQueueFromAVL();
+				assert bookmarkQueue != null : "bookmarkQueue is null";
+
+				JList<ListMenuItem> listMenu = view.getItemList();
+				assert listMenu != null : "listMenu is null";
+
+				DefaultListModel<ListMenuItem> listModel = view.getListModel();
+				assert listModel != null : "listModel is null";
+
+				for (Bookmark b : bookmarkQueue) {
+					listModel.addElement(new ListMenuItem(b.getTitle(), b.getDescription()));
+				}
+			}
+			catch(IOException e) {
+				System.out.println(e.getMessage());
+			}
+			catch(Exception e) {
+				System.out.println(e.getMessage());
+				System.out.println(e.getStackTrace());
+			}
+		} // End of actionPerformed
+	} // End of menuOpenListener
 
 	class menuSaveListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {

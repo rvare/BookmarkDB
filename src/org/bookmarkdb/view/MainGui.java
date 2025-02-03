@@ -37,6 +37,7 @@ public class MainGui {
 
 	// List area
 	private JList<ListMenuItem> itemList;
+	private DefaultListModel<ListMenuItem> listModel;
 
 	// Description box
 	private JTextArea descriptionBox;
@@ -120,9 +121,13 @@ public class MainGui {
 
 		// TODO: Clean up for better reading
 		// TODO: Get rid of test items and add to the list instead
-		ListMenuItem[] item = {new ListMenuItem("Test1", "Description"), new ListMenuItem("Test2", "Description 2")};
+		// ListMenuItem[] item = {new ListMenuItem("Test1", "Description"), new ListMenuItem("Test2", "Description 2")};
+		listModel = new DefaultListModel<ListMenuItem>();
+		// listModel.addElement(new ListMenuItem("Test1", "Description"));
+		// listModel.addElement(new ListMenuItem("Test2", "Description 2"));
 
-		itemList = new JList<ListMenuItem>(item);
+		itemList = new JList<ListMenuItem>();
+		itemList.setModel(listModel);
 		mainFrame.getContentPane().add(BorderLayout.CENTER, itemList);
 
 		// Create description area
@@ -221,6 +226,10 @@ public class MainGui {
 	// Methods
 	public void showMainFrame() {
 		mainFrame.setVisible(true);
+	}
+
+	public DefaultListModel<ListMenuItem> getListModel() {
+		return this.listModel;
 	}
 } // End of MainGui
 

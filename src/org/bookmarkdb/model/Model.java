@@ -121,7 +121,7 @@ public class Model {
 	public JSONArray openFile(final String filePath) throws IOException {
 		String jsonFileContents = Files.readString(Paths.get(filePath));
 		JSONArray bookmarkJSONArray = new JSONArray(jsonFileContents);
-		System.out.println(bookmarkJSONArray);
+		// System.out.println(bookmarkJSONArray);
 
 		return bookmarkJSONArray;
 	} // End of openFile
@@ -163,5 +163,10 @@ public class Model {
 			bk = processJson(iter.next().toString());
 			addNewBookmark(bk.getTitle(), bk);
 		}
+	}
+
+	public LinkedList<Bookmark> getQueueFromAVL() {
+		avl_tree.inOrderTraversal(avl_tree.getRoot());
+		return avl_tree.getQueue();
 	}
 } // End of Model class

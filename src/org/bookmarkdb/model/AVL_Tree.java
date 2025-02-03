@@ -2,8 +2,17 @@ package org.bookmarkdb.model;
 
 import org.bookmarkdb.model.Bookmark;
 
+import java.util.LinkedList;
+
 public class AVL_Tree {
 	private AVL_Node root;
+	
+	public LinkedList<Bookmark> queue;
+
+	public AVL_Tree() {
+		queue = new LinkedList<Bookmark>();
+		root = null;
+	}
 
 	// Getters
 	public AVL_Node getRoot() {
@@ -161,9 +170,14 @@ public class AVL_Tree {
 	public void inOrderTraversal(AVL_Node leaf) {
 		if (leaf != null) {
 			inOrderTraversal(leaf.getLeftNode());
-			System.out.println(leaf.getKey());
+			// System.out.println(leaf.getKey());
+			queue.add(leaf.getBookmark());
 			inOrderTraversal(leaf.getRightNode());
 		}
+	}
+
+	public LinkedList<Bookmark> getQueue() {
+		return queue;
 	}
 } // End AVL_Tree
 
