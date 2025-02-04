@@ -53,9 +53,26 @@ public class Controller {
 	class newButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("new fired");
-			GuiForm guiForm = new GuiForm();
-			guiForm.setVisible(true);
-			System.out.println("Does this run after window shows?");
+			//GuiForm guiForm = new GuiForm();
+			//guiForm.setVisible(true);
+			FormDialog dl = new FormDialog();
+			dl.setVisible(true);
+			String title = dl.getTitleText();
+			String url = dl.getUrlText();
+			String desc = dl.getDescriptionText();
+			String[] tags = dl.getTagsText().split(", ");
+			Bookmark bk = new Bookmark(url, title, desc, tags);
+			model.addNewBookmark(title, bk);
+
+			DefaultListModel<ListMenuItem> listModel = view.getListModel();
+			listModel.removeAllElements();
+			listModel.clear();
+			model.clearAVLQueue();
+			LinkedList<Bookmark> bookmarkQueue = model.getQueueFromAVL();
+
+			for (Bookmark b : bookmarkQueue) {
+				listModel.addElement(new ListMenuItem(b.getTitle(), b.getDescription()));
+			}
 		}
 	} // End of newListener
 

@@ -74,7 +74,25 @@ public class FormDialog extends JDialog { // TODO: Change to JDialogue because i
 		getContentPane().add(BorderLayout.SOUTH, formButtonPanel);
 
 		setSize(500, 300);
+		setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
 	} // End constructor
+
+	// Getters
+	public String getTitleText() {
+		return textFieldTitle.getText();
+	}
+
+	public String getUrlText() {
+		return textFieldUrl.getText();
+	}
+
+	public String getDescriptionText() {
+		return textAreaDescription.getText();
+	}
+
+	public String getTagsText() {
+		return textFieldTags.getText();
+	}
 
 	// TODO: Get rid of dispose and make it so that save will return a string in JSON format
 	// Internal classes

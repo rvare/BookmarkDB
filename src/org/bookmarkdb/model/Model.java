@@ -169,4 +169,8 @@ public class Model {
 		avl_tree.inOrderTraversal(avl_tree.getRoot());
 		return avl_tree.getQueue();
 	}
+
+	public void clearAVLQueue() {
+		avl_tree.getQueue().clear();
+	}
 } // End of Model class
