@@ -62,15 +62,17 @@ public class Controller {
 	class editButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("edit fired");
-			GuiForm guiForm = new GuiForm();
-			guiForm.setVisible(true);
+			//GuiForm guiForm = new GuiForm();
+			//guiForm.setVisible(true);
+			FormDialog dl = new FormDialog();
+			dl.setVisible(true);
+			System.out.println("Does it still run in edit?");
 		}
 	} // End of editListener
 
 	class copyButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("copy fired");
-			// Add actions
 			ListMenuItem item = view.getItemList().getSelectedValue();
 			try {
 				Bookmark bookmark = model.getBookmarkByTitle(item.getItemName()); // Throws exception
