@@ -21,4 +21,8 @@ public class ListMenuItem {
 	public String getDescription() {
 		return this.itemDescription;
 	}
+
+	public void setDescription(final String newDesc) {
+		this.itemDescription = newDesc;
+	}
 }

@@ -26,6 +26,8 @@ public class FormDialog extends JDialog { // TODO: Change to JDialogue because i
 
 	private JTextArea textAreaDescription;
 
+	private boolean cancelFlag;
+
 	public FormDialog() {
 		System.out.println("GuiForm constructor");
 		// setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -75,6 +77,8 @@ public class FormDialog extends JDialog { // TODO: Change to JDialogue because i
 
 		setSize(500, 300);
 		setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
+
+		cancelFlag = false;
 	} // End constructor
 
 	// Getters
@@ -94,12 +98,31 @@ public class FormDialog extends JDialog { // TODO: Change to JDialogue because i
 		return textFieldTags.getText();
 	}
 
+	public boolean canceledHit() {
+		return cancelFlag;
+	}
+
+	// Setters
+	public void setFormDialog(final String url, final String title, final String desc, final ArrayList<String> tags) {
+		this.textFieldUrl.setText(url);
+		this.textFieldTitle.setText(title);
+		this.textAreaDescription.setText(desc);
+
+		// TODO: Change this so that it doesn't create so many String objects that get destroyed by the garbage collector
+		String tagsString = String.format("%s", tags);
+		tagsString = tagsString.replace("[", " ");
+		tagsString = tagsString.replace("]", " ");
+		System.out.println(tagsString.trim());
+		this.textFieldTags.setText(tagsString.trim());
+	}
+
 	// TODO: Get rid of dispose and make it so that save will return a string in JSON format
 	// Internal classes
 	// NOTE: This class will go to the controller and handle the saving of the data but the button that constructs the form won't do that
 	class saveListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("FormDialog save button fired");
+			cancelFlag = false; // The reason this is here is to ensure that it's false when saved, but it might be too redundant
 			dispose();
 		}
 	}
@@ -107,6 +130,7 @@ public class FormDialog extends JDialog { // TODO: Change to JDialogue because i
 	class cancelListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("FormDialog cancel button fired");
+			cancelFlag = true;
 			dispose();
 		}
 	}

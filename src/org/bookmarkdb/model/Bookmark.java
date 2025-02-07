@@ -69,8 +69,8 @@ public class Bookmark {
 
 	}
 
-	public void setTagList() {
-
+	public void setTagList(String[] tags) {
+		this.tags = new ArrayList<String>(Arrays.asList(tags));
 	}
 
 	public void setDateModified(final LocalDateTime dateModified) {

@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.awt.datatransfer.StringSelection;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
+import java.util.*;
 
 import org.bookmarkdb.model.*;
 import org.bookmarkdb.view.*;
@@ -53,10 +54,13 @@ public class Controller {
 	class newButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("new fired");
-			//GuiForm guiForm = new GuiForm();
-			//guiForm.setVisible(true);
 			FormDialog dl = new FormDialog();
 			dl.setVisible(true);
+
+			if (dl.canceledHit()) {
+				return;
+			}
+
 			String title = dl.getTitleText();
 			String url = dl.getUrlText();
 			String desc = dl.getDescriptionText();
@@ -79,12 +83,56 @@ public class Controller {
 	class editButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("edit fired");
-			//GuiForm guiForm = new GuiForm();
-			//guiForm.setVisible(true);
-			FormDialog dl = new FormDialog();
-			dl.setVisible(true);
-			System.out.println("Does it still run in edit?");
-		}
+			try {
+				ListMenuItem item = view.getItemList().getSelectedValue();
+				Bookmark bookmark = model.getBookmarkByTitle(item.getItemName()); // Throws exception
+				String oldTitle = bookmark.getTitle();
+				FormDialog dl = new FormDialog();
+				dl.setFormDialog(bookmark.getURL(), bookmark.getTitle(), bookmark.getDescription(), bookmark.getTags());
+				dl.setVisible(true);
+
+				String title = dl.getTitleText();
+				String url = dl.getUrlText();
+				String desc = dl.getDescriptionText();
+				String[] tags = dl.getTagsText().split(", ");
+
+				// If statement that'll take care of cancel
+				if (dl.canceledHit()) {
+					return;
+				}
+
+				if (!url.equals(bookmark.getURL())) {
+					bookmark.setURL(url);
+				}
+
+				if (desc.equals(bookmark.getDescription())) {
+					bookmark.setDescription(desc);
+					item.setDescription(desc);
+				}
+				
+				if (Arrays.equals(tags, bookmark.getTags().toArray())) {
+					bookmark.setTagList(tags);
+				}
+
+				if (!oldTitle.equals(title)) {
+					DefaultListModel<ListMenuItem> listModel = view.getListModel();
+					listModel.removeAllElements();
+					listModel.clear();
+					model.clearAVLQueue();
+					LinkedList<Bookmark> bookmarkQueue = model.getQueueFromAVL();
+
+					for (Bookmark b : bookmarkQueue) {
+						listModel.addElement(new ListMenuItem(b.getTitle(), b.getDescription()));
+					}
+				}
+				else {
+					item.setDescription(desc);
+					bookmark.setDescription(desc);
+				}
+			} catch(BookmarkException bkException) {
+				System.out.println(bkException.getMessage());
+			}
+		} // End actionPerformed
 	} // End of editListener
 
 	class copyButtonListener implements ActionListener {
