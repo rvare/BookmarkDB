@@ -27,6 +27,7 @@ public class MainGui {
 	private JMenuItem aboutMenuItem;
 	
 	// Buttons
+	private JButton homeButton;
 	private JButton newButton;
 	private JButton editButton;
 	private JButton copyButton;
@@ -102,6 +103,7 @@ public class MainGui {
 		mainFrame.setJMenuBar(menuBar);
 
 		// Create Buttons
+		homeButton = new JButton("Home");
 		newButton = new JButton("New");
 		editButton = new JButton("Edit");
 		copyButton = new JButton("Copy");
@@ -110,6 +112,7 @@ public class MainGui {
 		searchButton = new JButton("Search");
 
 		buttonPanel = new JPanel();
+		buttonPanel.add(homeButton);
 		buttonPanel.add(newButton);
 		buttonPanel.add(editButton);
 		buttonPanel.add(deleteButton);
@@ -158,7 +161,15 @@ public class MainGui {
 		return this.descriptionBox;
 	}
 
+	public String getSearchFieldText() {
+		return searchField.getText();
+	}
+
 	// Setters
+	public void addHomeButtonListener(ActionListener homeButtonListener) {
+		homeButton.addActionListener(homeButtonListener);
+	}
+
 	public void addNewButtonListener(ActionListener newButtonListener) {
 		newButton.addActionListener(newButtonListener);
 	}

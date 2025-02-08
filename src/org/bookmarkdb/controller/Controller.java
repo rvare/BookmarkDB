@@ -39,6 +39,7 @@ public class Controller {
 		this.view.addMenuAboutItemListener(new menuAboutItemListener());
 
 		// Button listeners
+		this.view.addHomeButtonListener(new homeButtonListener());
 		this.view.addNewButtonListener(new newButtonListener());
 		this.view.addEditButtonListener(new editButtonListener());
 		this.view.addDeleteButtonListener(new deleteButtonListener());
@@ -153,7 +154,6 @@ public class Controller {
 		}
 	} // End of copyListener
 
-	// TODO: Implement
 	class deleteButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("delete fired");
@@ -189,9 +189,36 @@ public class Controller {
 	class searchButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("search fired");
-			// Add actions
+			String searchQuery = view.getSearchFieldText();
+
+			try {
+				Bookmark bookmark = model.getBookmarkByTitle(searchQuery); // Throws exception
+				System.out.println(bookmark);
+				DefaultListModel<ListMenuItem> listModel = view.getListModel();
+				listModel.removeAllElements();
+				listModel.clear();
+				listModel.addElement(new ListMenuItem(bookmark.getTitle(), bookmark.getDescription()));
+			}
+			catch(BookmarkException bkException) {
+				System.out.println(bkException.getMessage());
+			}
 		}
 	} // End of searchListener
+
+	class homeButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("home fired");
+			DefaultListModel<ListMenuItem> listModel = view.getListModel();
+			listModel.removeAllElements();
+			listModel.clear();
+			model.clearAVLQueue();
+			LinkedList<Bookmark> bookmarkQueue = model.getQueueFromAVL();
+
+			for (Bookmark b : bookmarkQueue) {
+				listModel.addElement(new ListMenuItem(b.getTitle(), b.getDescription()));
+			}
+		}
+	} // End of homeButtonListener
 
 	// Menu bar listeners
 	// TODO Implement their functionality
