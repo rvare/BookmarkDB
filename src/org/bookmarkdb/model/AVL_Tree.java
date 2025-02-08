@@ -30,7 +30,7 @@ public class AVL_Tree {
 			leaf = new AVL_Node(key, bookmark);
 			return leaf;
 		}
-		else if (key.compareTo(leaf.getKey()) < 0) {
+		else if (key.compareTo(leaf.getKey()) < 0) { // Traverse left
 			leaf.setLeftNode(insert(leaf.getLeftNode(), key, bookmark));
 		}
 		else {
@@ -45,14 +45,17 @@ public class AVL_Tree {
 	public AVL_Node deleteNode(AVL_Node leaf, String key) {
 		if (leaf == null) return null;
 
-		if (leaf.getKey().compareTo(key) < 0) { // Traverse left
+		if (key.compareTo(leaf.getKey()) < 0) { // Traverse left
+			assert !leaf.getKey().equals(key) : "Correct node found but still traversing left.";
 			leaf.setLeftNode(deleteNode(leaf.getLeftNode(), key));
 		}
-		else if (leaf.getKey().compareTo(key) > 0) { // Traverse right
+		else if (key.compareTo(leaf.getKey()) > 0) { // Traverse right
+			assert !leaf.getKey().equals(key) : "Correct node found but still traversing right.";
 			leaf.setRightNode(deleteNode(leaf.getRightNode(), key));
 		}
 		else { // Node found
-			if (leaf.getLeftNode() ==  null && leaf.getRightNode() == null) { // Signle node case
+			if (leaf.getLeftNode() == null && leaf.getRightNode() == null) { // Signle node case
+				assert leaf.getKey().equals(key) : "Deleting wrong node.";
 				return null;
 			}
 			else if (leaf.getLeftNode() != null && leaf.getRightNode() == null) { // Left child case

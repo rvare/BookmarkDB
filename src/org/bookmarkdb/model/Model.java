@@ -59,7 +59,7 @@ public class Model {
 	public void setBookmarkTitle(final String oldTitle, final String newTitle) throws BookmarkException {
 		Bookmark bookmark = getBookmarkByTitle(oldTitle); // This line throws a BookmarkException
 
-		deleteBookmark(bookmark.getTitle());
+		deleteBookmark(bookmark);
 		bookmark.setTitle(newTitle);
 		bookmark.setDateModified(LocalDateTime.now());
 		addNewBookmark(newTitle, bookmark);
@@ -107,14 +107,17 @@ public class Model {
 		bookmark.setDateModified(LocalDateTime.now());
 	}
 
-	public void deleteBookmark(final String title) throws BookmarkException {
-		Bookmark bookmark = getBookmarkByTitle(title); // This line throws a BookmarkException
-		avl_tree.deleteNode(avl_tree.getRoot(), title);
+	// TODO: Rewrite to use the Bookmark object in the method argument because it'll be easier to use remove() with linked list
+	public void deleteBookmark(final Bookmark bookmark) {
+		// Bookmark bookmark = getBookmarkByTitle(title); // This line throws a BookmarkException
+		avl_tree.deleteNode(avl_tree.getRoot(), bookmark.getTitle());
 
 		ArrayList<String> bookmarkTags = bookmark.getTags();
 
-		for (String i : bookmarkTags) { // TODO: Fix this so it doesn't remove a tag when there's a list there. Only remove when null.
-			tagsIndex.remove(i);
+		// TODO: Fix this so it doesn't remove a tag when there's a list there. Only remove when null.
+		for (String i : bookmarkTags) { 
+			LinkedList<Bookmark> bucket = tagsIndex.get(i);
+			bucket.remove(bookmark);
 		}
 	}
 
