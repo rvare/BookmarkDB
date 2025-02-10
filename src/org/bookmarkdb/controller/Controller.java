@@ -410,6 +410,7 @@ public class Controller {
 		}
 	}
 
+	// This listener will be skipped for as it'll be used for a specific feature of the application
 	class menuExportListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("export as listener fired");
@@ -456,6 +457,8 @@ public class Controller {
 	class menuAboutItemListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("about item listener fired");
+			AboutDialog ad = new AboutDialog();
+			ad.setVisible(true);
 		}
 	}
 
