@@ -35,6 +35,7 @@ public class Controller {
 		this.view.addMenuCopyListener(new menuCopyListener());
 		this.view.addMenuNewItemListener(new menuNewItemListener());
 		this.view.addMenuEditItemListener(new menuEditItemListener());
+		this.view.addMenuDeleteItemListener(new menuDeleteItemListener());
 		this.view.addMenuDocumentationItemListener(new menuDocumentationItemListener());
 		this.view.addMenuAboutItemListener(new menuAboutItemListener());
 
@@ -49,6 +50,135 @@ public class Controller {
 		// List listener
 		this.view.addListSelectionListenerToList(new listListener());
 	}
+	
+	// Operations
+	private void newOperation() {
+		System.out.println("new operation");
+		FormDialog dl = new FormDialog();
+		dl.setVisible(true);
+
+		if (dl.canceledHit()) {
+			return;
+		}
+
+		String title = dl.getTitleText();
+		String url = dl.getUrlText();
+		String desc = dl.getDescriptionText();
+		String[] tags = dl.getTagsText().split(", ");
+		Bookmark bk = new Bookmark(url, title, desc, tags);
+		model.addNewBookmark(title, bk);
+
+		DefaultListModel<ListMenuItem> listModel = view.getListModel();
+		listModel.removeAllElements();
+		listModel.clear();
+		model.clearAVLQueue();
+		LinkedList<Bookmark> bookmarkQueue = model.getQueueFromAVL();
+
+		for (Bookmark b : bookmarkQueue) {
+			listModel.addElement(new ListMenuItem(b.getTitle(), b.getDescription()));
+		}
+
+	} // End newOperation
+
+	private void editOperation() {
+		System.out.println("edit operation");
+		try {
+			ListMenuItem item = view.getItemList().getSelectedValue();
+			Bookmark bookmark = model.getBookmarkByTitle(item.getItemName()); // Throws exception
+			String oldTitle = bookmark.getTitle();
+			FormDialog dl = new FormDialog();
+			dl.setFormDialog(bookmark.getURL(), bookmark.getTitle(), bookmark.getDescription(), bookmark.getTags());
+			dl.setVisible(true);
+
+			String title = dl.getTitleText();
+			String url = dl.getUrlText();
+			String desc = dl.getDescriptionText();
+			String[] tags = dl.getTagsText().split(", ");
+
+			// If statement that'll take care of cancel
+			if (dl.canceledHit()) {
+				return;
+			}
+
+			if (!url.equals(bookmark.getURL())) {
+				bookmark.setURL(url);
+			}
+
+			if (desc.equals(bookmark.getDescription())) {
+				bookmark.setDescription(desc);
+				item.setDescription(desc);
+			}
+				
+			if (Arrays.equals(tags, bookmark.getTags().toArray())) {
+				bookmark.setTagList(tags);
+			}
+
+			assert !oldTitle.equals(title) : "Titles match but aren't suppose to.";
+			if (!oldTitle.equals(title)) {
+				System.out.println("Here");
+				DefaultListModel<ListMenuItem> listModel = view.getListModel();
+				listModel.removeAllElements();
+				listModel.clear();
+				model.clearAVLQueue();
+				LinkedList<Bookmark> bookmarkQueue = model.getQueueFromAVL();
+
+				for (Bookmark b : bookmarkQueue) {
+					listModel.addElement(new ListMenuItem(b.getTitle(), b.getDescription()));
+				}
+			}
+			else {
+				item.setDescription(desc);
+				bookmark.setDescription(desc);
+			}
+		} // End try
+		catch(BookmarkException bkException) {
+			System.out.println(bkException.getMessage());
+		}
+	} // End editOperation
+
+	private void copyOperation() {
+		System.out.println("copy operation");
+		ListMenuItem item = view.getItemList().getSelectedValue();
+		try {
+			Bookmark bookmark = model.getBookmarkByTitle(item.getItemName()); // Throws exception
+			StringSelection urlString = new StringSelection(bookmark.getURL());
+			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			clipboard.setContents(urlString, urlString);
+		}
+		catch(BookmarkException bkException) {
+			System.out.println(bkException.getMessage());
+		}
+	} // End copyOperation
+
+	private void deleteOperation() {
+		System.out.println("delete operation");
+		ListMenuItem item = view.getItemList().getSelectedValue();
+		try {
+			JList viewList = view.getItemList();
+			viewList.clearSelection();
+			viewList.revalidate();
+			Bookmark bookmark = model.getBookmarkByTitle(item.getItemName()); // Throws exception
+			assert bookmark.getTitle() == item.getItemName() : String.format("Doesn't match - %s : %s", bookmark.getTitle(), item.getItemName());
+			model.deleteBookmark(bookmark);
+
+			DefaultListModel<ListMenuItem> listModel = view.getListModel();
+			listModel.removeAllElements();
+			listModel.clear();
+			model.clearAVLQueue();
+			LinkedList<Bookmark> bookmarkQueue = model.getQueueFromAVL();
+
+			for (Bookmark b : bookmarkQueue) {
+				listModel.addElement(new ListMenuItem(b.getTitle(), b.getDescription()));
+			}
+
+		} // End try
+		catch(BookmarkException bkException) {
+				System.out.println(bkException.getMessage());
+		}
+		catch(Exception ex) {
+				System.out.println(ex.getMessage());
+		}
+	} // End deleteOperation
 
 	// Inner classes
 	// Button listeners
@@ -115,7 +245,7 @@ public class Controller {
 					bookmark.setTagList(tags);
 				}
 
-				assert !oldTitle.equals(title) : "Titles match but aren't suppose to.";
+				// assert !oldTitle.equals(title) : "Titles match but aren't suppose to."; // This needs to be fixed, or erease
 				if (!oldTitle.equals(title)) {
 					System.out.println("Here");
 					DefaultListModel<ListMenuItem> listModel = view.getListModel();
@@ -292,18 +422,28 @@ public class Controller {
 	class menuCopyListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("copy listener fired");
+			copyOperation();
 		}
 	}
 
 	class menuNewItemListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("new item listener fired");
+			newOperation();
 		}
 	}
 
 	class menuEditItemListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("edit item listener fired");
+			editOperation();
+		}
+	}
+
+	class menuDeleteItemListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("delete item listener fired");
+			deleteOperation();
 		}
 	}
 

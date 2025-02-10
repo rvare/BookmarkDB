@@ -23,6 +23,7 @@ public class MainGui {
 	private JMenuItem copyMenuItem;
 	private JMenuItem newItemMenuItem;
 	private JMenuItem editItemMenuItem;
+	private JMenuItem deleteItemMenuItem;
 	private JMenuItem docMenuItem;
 	private JMenuItem aboutMenuItem;
 	
@@ -86,6 +87,9 @@ public class MainGui {
 
 		editItemMenuItem = new JMenuItem("Edit Item");
 		editMenu.add(editItemMenuItem);
+
+		deleteItemMenuItem = new JMenuItem("Delete Item");
+		editMenu.add(deleteItemMenuItem);
 
 		// Create Help menu and its items
 		JMenu helpMenu = new JMenu("Help");
@@ -220,6 +224,10 @@ public class MainGui {
 
 	public void addMenuEditItemListener(ActionListener menuEditListener) {
 		editItemMenuItem.addActionListener(menuEditListener);
+	}
+
+	public void addMenuDeleteItemListener(ActionListener menuDeleteItemListener) {
+		deleteItemMenuItem.addActionListener(menuDeleteItemListener);
 	}
 
 	public void addMenuDocumentationItemListener(ActionListener menuDocumentationItemListener) {
