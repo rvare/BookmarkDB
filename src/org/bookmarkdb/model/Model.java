@@ -176,4 +176,8 @@ public class Model {
 	public void clearAVLQueue() {
 		avl_tree.getQueue().clear();
 	}
+
+	public void saveContentsToFile() {
+		System.out.println("saveConentsToFile");
+	}
 } // End of Model class

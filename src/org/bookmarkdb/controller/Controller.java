@@ -10,6 +10,8 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.util.*;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.bookmarkdb.model.*;
 import org.bookmarkdb.view.*;
@@ -411,10 +413,25 @@ public class Controller {
 	}
 
 	// This listener will be skipped for as it'll be used for a specific feature of the application
+	// TODO: Move to the view class (MainGui)
 	class menuExportListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("export as listener fired");
 			JFileChooser fileExporter = new JFileChooser();
+			fileExporter.setAcceptAllFileFilterUsed(false);
+
+			FileNameExtensionFilter htmlFilter = new FileNameExtensionFilter("HTML file", "html");
+			fileExporter.addChoosableFileFilter(htmlFilter);
+
+			FileNameExtensionFilter mdFilter = new FileNameExtensionFilter("Markdown", "md");
+			fileExporter.addChoosableFileFilter(mdFilter);
+			
+			FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("Text", "txt");
+			fileExporter.addChoosableFileFilter(txtFilter);
+
+			FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter("XML", "xml");
+			fileExporter.addChoosableFileFilter(xmlFilter);
+
 			fileExporter.showSaveDialog(view.getMainFrame());
 			// saveFile using fileSaver
 		}
