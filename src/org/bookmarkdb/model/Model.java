@@ -99,7 +99,7 @@ public class Model {
 			LinkedList<Bookmark> bucket = tagsIndex.get(tag);
 			bucket.add(bookmark);
 		}
-	}
+	} // End of addNewBookmark
 
 	public void addNewTag(final String title, final String newTag) throws BookmarkException {
 		Bookmark bookmark = getBookmarkByTitle(title); // This line throws a BookmarkException
@@ -119,7 +119,7 @@ public class Model {
 			LinkedList<Bookmark> bucket = tagsIndex.get(i);
 			bucket.remove(bookmark);
 		}
-	}
+	} // End of deleteBookmark
 
 	public JSONArray openFile(final String filePath) throws IOException {
 		String jsonFileContents = Files.readString(Paths.get(filePath));
@@ -166,7 +166,7 @@ public class Model {
 			bk = processJson(iter.next().toString());
 			addNewBookmark(bk.getTitle(), bk);
 		}
-	}
+	} // End of inputDataFile
 
 	public LinkedList<Bookmark> getQueueFromAVL() {
 		avl_tree.inOrderTraversal(avl_tree.getRoot());
@@ -204,7 +204,6 @@ public class Model {
 		}
 		jsonWriter.endArray();
 
-		// System.out.println(jsonContents);
 		return jsonContents;
-	}
+	} // End of createJsonArray
 } // End of Model class
