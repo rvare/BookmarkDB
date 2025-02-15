@@ -399,7 +399,21 @@ public class Controller {
 			System.out.println("save listener fired");
 			JFileChooser fileSaver = new JFileChooser();
 			fileSaver.showSaveDialog(view.getMainFrame());
-			// saveFile using fileSaver
+
+			File filePath = fileSaver.getSelectedFile();
+			System.out.println(filePath);
+
+			StringBuilder jsonContents = model.createJsonArray();
+
+			try {
+				model.saveContentsToFile(filePath);
+			}
+			catch (IOException ioEx) {
+				System.out.println(ioEx.getMessage());
+			}
+			catch (Exception ex) {
+				System.out.println(ex.getMessage());
+			}
 		}
 	}
 
@@ -407,8 +421,22 @@ public class Controller {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("save as listener fired");
 			JFileChooser fileSaver = new JFileChooser();
-			fileSaver.showOpenDialog(view.getMainFrame());
-			// saveFile using fileSaver
+			fileSaver.showSaveDialog(view.getMainFrame());
+
+			File filePath = fileSaver.getSelectedFile();
+			System.out.println(filePath);
+
+			StringBuilder jsonContents = model.createJsonArray();
+
+			try {
+				model.saveContentsToFile(filePath);
+			}
+			catch (IOException ioEx) {
+				System.out.println(ioEx.getMessage());
+			}
+			catch (Exception ex) {
+				System.out.println(ex.getMessage());
+			}
 		}
 	}
 
@@ -434,6 +462,8 @@ public class Controller {
 
 			fileExporter.showSaveDialog(view.getMainFrame());
 			// saveFile using fileSaver
+
+			// model.saveContentsToFile();
 		}
 	}
 

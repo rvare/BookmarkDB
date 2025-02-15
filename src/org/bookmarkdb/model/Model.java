@@ -177,7 +177,34 @@ public class Model {
 		avl_tree.getQueue().clear();
 	}
 
-	public void saveContentsToFile() {
+	public void saveContentsToFile(final File filePath) throws IOException {
 		System.out.println("saveConentsToFile");
+		StringBuilder jsonContents = createJsonArray();
+		System.out.println(jsonContents.toString());
+
+		FileWriter fileWriter = new FileWriter(filePath);
+		fileWriter.write(jsonContents.toString());
+		fileWriter.close();
+	}
+
+	public StringBuilder createJsonArray() {
+		clearAVLQueue();
+		LinkedList<Bookmark> bookmarkList = getQueueFromAVL();
+
+		StringBuilder jsonContents = new StringBuilder();
+		JSONWriter jsonWriter = new JSONWriter(jsonContents);
+
+		jsonWriter.array();
+		for (Bookmark b : bookmarkList) {
+			jsonWriter.object().key("url").value(b.getURL())
+								.key("title").value(b.getTitle())
+								.key("description").value(b.getDescription())
+								.key("tags").value(b.getTags())
+					.endObject();
+		}
+		jsonWriter.endArray();
+
+		// System.out.println(jsonContents);
+		return jsonContents;
 	}
 } // End of Model class
