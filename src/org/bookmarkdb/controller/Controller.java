@@ -54,12 +54,26 @@ public class Controller {
 		// List listener
 		this.view.addListSelectionListenerToList(new listListener());
 	}
+
+	// Getters
+	public void refreshViewListModel() {
+		this.model.clearAVLQueue();
+		LinkedList<Bookmark> bookmarkQueue = this.model.getQueueFromAVL();
+		LinkedList<ListMenuItem> inOrderList = new LinkedList<ListMenuItem>();
+
+		for (Bookmark bookmark : bookmarkQueue) {
+			inOrderList.add(new ListMenuItem(bookmark.getTitle(), bookmark.getDescription()));
+		}
+
+		this.view.refreshListModel(inOrderList);
+	}
 	
 	// Operations
 	private void newOperation() { // TODO CLEAN: Remove GUI and logic operations to GUI class and Model class respectively
 		System.out.println("new operation");
-		FormDialog formDialog = new FormDialog(); // TODO CLEAN: DONE Rename dl to a more descriptive name
-		formDialog.setVisible(true);
+		// FormDialog formDialog = new FormDialog(); // TODO CLEAN: DONE Rename dl to a more descriptive name
+
+		FormDialog formDialog = this.view.createFormDialog();
 
 		if (formDialog.canceledHit()) {
 			return;
@@ -73,16 +87,8 @@ public class Controller {
 		Bookmark newBookmark = new Bookmark(url, title, desc, tags);
 		model.addNewBookmark(title, newBookmark);
 
-		// TODO REFACTOR: Move to the MainGui class since it's related to it
-		DefaultListModel<ListMenuItem> listModel = view.getListModel();
-		listModel.removeAllElements();
-		listModel.clear();
-		model.clearAVLQueue();
-		LinkedList<Bookmark> bookmarkQueue = model.getQueueFromAVL();
-
-		for (Bookmark bookmark : bookmarkQueue) {
-			listModel.addElement(new ListMenuItem(bookmark.getTitle(), bookmark.getDescription()));
-		}
+		// TODO REFACTOR: DONE Move to the MainGui class since it's related to it
+		this.refreshViewListModel();
 	} // End newOperation
 
 	private void editOperation() {
@@ -91,50 +97,44 @@ public class Controller {
 			ListMenuItem item = view.getItemList().getSelectedValue();
 			Bookmark bookmark = model.getBookmarkByTitle(item.getItemName()); // Throws exception
 			String oldTitle = bookmark.getTitle();
-			// TODO REFACTOR: Move to the MainGui class
-			FormDialog formDialog = new FormDialog();
-			formDialog.setFormDialog(bookmark.getURL(), bookmark.getTitle(), bookmark.getDescription(), bookmark.getTags());
-			formDialog.setVisible(true);
+			// TODO REFACTOR: DONE Move to the MainGui class
+			FormDialog formDialog = this.view.createFormDialog(bookmark.getURL(), bookmark.getTitle(), bookmark.getDescription(), bookmark.getTags());
 
-			String title = formDialog.getTitleText();
-			String url = formDialog.getUrlText();
-			String desc = formDialog.getDescriptionText();
-			String[] tags = formDialog.getTagsText().split(", ");
+			String newTitle = formDialog.getTitleText();
+			String newUrl = formDialog.getUrlText();
+			String newDesc = formDialog.getDescriptionText();
+			String[] newTags = formDialog.getTagsText().split(", ");
 
 			// If statement that'll take care of cancel
 			if (formDialog.canceledHit()) {
 				return;
 			}
 
-			if (!url.equals(bookmark.getURL())) {
-				bookmark.setURL(url);
+			if (!newUrl.equals(bookmark.getURL())) {
+				bookmark.setURL(newUrl);
 			}
 
-			if (desc.equals(bookmark.getDescription())) {
-				bookmark.setDescription(desc);
-				item.setDescription(desc);
+			if (newDesc.equals(bookmark.getDescription())) {
+				bookmark.setDescription(newDesc);
+				item.setDescription(newDesc);
 			}
 				
-			if (Arrays.equals(tags, bookmark.getTags().toArray())) {
-				bookmark.setTagList(tags);
+			if (Arrays.equals(newTags, bookmark.getTags().toArray())) {
+				bookmark.setTagList(newTags);
 			}
 
-			assert !oldTitle.equals(title) : "Titles match but aren't suppose to.";
-			if (!oldTitle.equals(title)) {
-				// TODO REFACTOR: Move to MainGui class
-				DefaultListModel<ListMenuItem> listModel = view.getListModel();
-				listModel.removeAllElements();
-				listModel.clear();
-				model.clearAVLQueue();
-				LinkedList<Bookmark> bookmarkQueue = model.getQueueFromAVL();
+			assert !oldTitle.equals(newTitle) : "Titles match but aren't suppose to.";
+			if (!oldTitle.equals(newTitle)) {
+				// TODO REFACTOR: DONE Move to MainGui class
+				this.model.deleteBookmark(bookmark);
+				bookmark.setTitle(newTitle);
+				this.model.addNewBookmark(newTitle, bookmark);
 
-				for (Bookmark b : bookmarkQueue) {
-					listModel.addElement(new ListMenuItem(b.getTitle(), b.getDescription()));
-				}
+				this.refreshViewListModel();
 			}
 			else {
-				item.setDescription(desc);
-				bookmark.setDescription(desc);
+				item.setDescription(newDesc);
+				bookmark.setDescription(newDesc);
 			}
 		} // End try
 		catch(BookmarkException bkException) {
@@ -146,11 +146,8 @@ public class Controller {
 		System.out.println("copy operation");
 		ListMenuItem item = view.getItemList().getSelectedValue();
 		try {
-			// TODO REFACTOR: Move to the Model class
-			Bookmark bookmark = model.getBookmarkByTitle(item.getItemName()); // Throws BookmarkException
-			StringSelection urlString = new StringSelection(bookmark.getURL());
-			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-			clipboard.setContents(urlString, urlString);
+			// TODO REFACTOR: DONE Move to the Model class
+			this.model.copyToClipboard(item.getItemName());
 		}
 		catch(BookmarkException bkException) {
 			System.out.println(bkException.getMessage());
@@ -168,16 +165,8 @@ public class Controller {
 			assert bookmark.getTitle() == item.getItemName() : String.format("Doesn't match - %s : %s", bookmark.getTitle(), item.getItemName());
 			model.deleteBookmark(bookmark);
 
-			// TODO REFACTOR: Move to MainGui class
-			DefaultListModel<ListMenuItem> listModel = view.getListModel();
-			listModel.removeAllElements();
-			listModel.clear();
-			model.clearAVLQueue();
-			LinkedList<Bookmark> bookmarkQueue = model.getQueueFromAVL();
-
-			for (Bookmark b : bookmarkQueue) {
-				listModel.addElement(new ListMenuItem(b.getTitle(), b.getDescription()));
-			}
+			// TODO REFACTOR: DONE Move to MainGui class
+			this.refreshViewListModel();
 		} // End try
 		catch(BookmarkException bkException) {
 				System.out.println(bkException.getMessage());
@@ -228,13 +217,9 @@ public class Controller {
 			String searchQuery = view.getSearchFieldText();
 
 			try {
-				// TODO REFACTOR: Move some of this to MainGui
+				// TODO REFACTOR: DONE Move some of this to MainGui
 				Bookmark bookmark = model.getBookmarkByTitle(searchQuery); // Throws BookmarkException
-				System.out.println(bookmark);
-				DefaultListModel<ListMenuItem> listModel = view.getListModel();
-				listModel.removeAllElements();
-				listModel.clear();
-				listModel.addElement(new ListMenuItem(bookmark.getTitle(), bookmark.getDescription()));
+				view.showSearchResult(new ListMenuItem(bookmark.getTitle(), bookmark.getDescription()));
 			} // End try
 			catch(BookmarkException bkException) {
 				System.out.println(bkException.getMessage());
@@ -246,16 +231,8 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("home fired");
-			// TODO REFACTOR: Move to MainGui as it's pertains to it
-			DefaultListModel<ListMenuItem> listModel = view.getListModel();
-			listModel.removeAllElements();
-			listModel.clear();
-			model.clearAVLQueue();
-			LinkedList<Bookmark> bookmarkQueue = model.getQueueFromAVL();
-
-			for (Bookmark b : bookmarkQueue) {
-				listModel.addElement(new ListMenuItem(b.getTitle(), b.getDescription()));
-			}
+			// TODO REFACTOR: DONE Move to MainGui as it's pertains to it
+			refreshViewListModel();
 		} // End of actionPerformed
 	} // End of homeButtonListener
 

@@ -5,6 +5,9 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.io.*;
+import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.bookmarkdb.view.GuiForm;
 import org.bookmarkdb.view.ListMenuItem;
@@ -249,5 +252,36 @@ public class MainGui {
 
 	public DefaultListModel<ListMenuItem> getListModel() {
 		return this.listModel;
+	}
+
+	public FormDialog createFormDialog() {
+		FormDialog formDialog = new FormDialog();
+		formDialog.setVisible(true);
+		return formDialog;
+	}
+
+	public FormDialog createFormDialog(final String url, final String title, final String description, ArrayList<String> tags) {
+		FormDialog formDialog = new FormDialog();
+		formDialog.setFormDialog(url, title, description, tags);
+		formDialog.setVisible(true);
+		return formDialog;
+	}
+
+	public void refreshListModel(final LinkedList<ListMenuItem> inOrderList) {
+		System.out.println("refreshListModel");
+		DefaultListModel<ListMenuItem> listModel = this.getListModel();
+		listModel.removeAllElements();
+		listModel.clear();
+
+		for (ListMenuItem item : inOrderList) {
+			listModel.addElement(item);
+		}
+	}
+
+	public void showSearchResult(ListMenuItem searchResult) {
+		DefaultListModel<ListMenuItem> listModel = this.getListModel();
+		listModel.removeAllElements();
+		listModel.clear();
+		listModel.addElement(searchResult);
 	}
 } // End of MainGui

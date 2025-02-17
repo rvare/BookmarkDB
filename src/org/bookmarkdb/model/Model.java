@@ -6,6 +6,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.awt.datatransfer.StringSelection;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+
 import org.json.*;
 
 import org.bookmarkdb.model.Bookmark;
@@ -61,7 +65,7 @@ public class Model {
 	public void setBookmarkTitle(final String oldTitle, final String newTitle) throws BookmarkException {
 		Bookmark bookmark = getBookmarkByTitle(oldTitle); // This line throws a BookmarkException
 
-		deleteBookmark(bookmark);
+		this.deleteBookmark(bookmark);
 		bookmark.setTitle(newTitle);
 		bookmark.setDateModified(LocalDateTime.now());
 		addNewBookmark(newTitle, bookmark);
@@ -109,6 +113,13 @@ public class Model {
 		Bookmark bookmark = getBookmarkByTitle(title); // This line throws a BookmarkException
 		bookmark.addNewTag(newTag);
 		bookmark.setDateModified(LocalDateTime.now());
+	}
+
+	public void copyToClipboard(final String title) throws BookmarkException {
+		Bookmark bookmark = this.getBookmarkByTitle(title); // Throws BookmarkException
+		StringSelection urlString = new StringSelection(bookmark.getURL());
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents(urlString, urlString);
 	}
 
 	// TODO: Rewrite to use the Bookmark object in the method argument because it'll be easier to use remove() with linked list
