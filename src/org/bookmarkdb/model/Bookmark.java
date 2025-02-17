@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+// TODO CLEAN: Remove print statements
+
 public class Bookmark {
 	private String url;
 	private String title;
@@ -13,12 +15,12 @@ public class Bookmark {
 	private LocalDateTime dateModified;
 
 	public Bookmark() {
-		System.out.println("    Defualt Bookmark constructor");
+		// System.out.println("    Defualt Bookmark constructor");
 		this.tags = new ArrayList<String>();
 	}
 
 	public Bookmark(final String url, final String title, final String description, String[] tags) {
-		System.out.println("    Non-Defualt Bookmark constructor");
+		// System.out.println("    Non-Defualt Bookmark constructor");
 		this.url = url;
 		this.title = title;
 		this.description = description;
@@ -63,10 +65,6 @@ public class Bookmark {
 
 	public void setDescription(final String description) {
 		this.description = description;
-	}
-
-	public void setTag() {
-
 	}
 
 	public void setTagList(String[] tags) {

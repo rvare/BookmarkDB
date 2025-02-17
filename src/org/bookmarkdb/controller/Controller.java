@@ -16,6 +16,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.bookmarkdb.model.*;
 import org.bookmarkdb.view.*;
 
+// TODO: Refactor to add comments so that everyone knows where an exception maybe thrown and indicate what is thrown
+
 public class Controller {
 	private final MainGui view;
 	private final Model model;
@@ -54,30 +56,32 @@ public class Controller {
 	}
 	
 	// Operations
-	private void newOperation() {
+	private void newOperation() { // TODO CLEAN: Remove GUI and logic operations to GUI class and Model class respectively
 		System.out.println("new operation");
-		FormDialog dl = new FormDialog();
-		dl.setVisible(true);
+		FormDialog formDialog = new FormDialog(); // TODO CLEAN: DONE Rename dl to a more descriptive name
+		formDialog.setVisible(true);
 
-		if (dl.canceledHit()) {
+		if (formDialog.canceledHit()) {
 			return;
 		}
 
-		String title = dl.getTitleText();
-		String url = dl.getUrlText();
-		String desc = dl.getDescriptionText();
-		String[] tags = dl.getTagsText().split(", ");
-		Bookmark bk = new Bookmark(url, title, desc, tags);
-		model.addNewBookmark(title, bk);
+		// This should be fine as it's preparing the data to be sent to the Model object
+		String title = formDialog.getTitleText();
+		String url = formDialog.getUrlText();
+		String desc = formDialog.getDescriptionText();
+		String[] tags = formDialog.getTagsText().split(", ");
+		Bookmark newBookmark = new Bookmark(url, title, desc, tags);
+		model.addNewBookmark(title, newBookmark);
 
+		// TODO REFACTOR: Move to the MainGui class since it's related to it
 		DefaultListModel<ListMenuItem> listModel = view.getListModel();
 		listModel.removeAllElements();
 		listModel.clear();
 		model.clearAVLQueue();
 		LinkedList<Bookmark> bookmarkQueue = model.getQueueFromAVL();
 
-		for (Bookmark b : bookmarkQueue) {
-			listModel.addElement(new ListMenuItem(b.getTitle(), b.getDescription()));
+		for (Bookmark bookmark : bookmarkQueue) {
+			listModel.addElement(new ListMenuItem(bookmark.getTitle(), bookmark.getDescription()));
 		}
 	} // End newOperation
 
@@ -87,17 +91,18 @@ public class Controller {
 			ListMenuItem item = view.getItemList().getSelectedValue();
 			Bookmark bookmark = model.getBookmarkByTitle(item.getItemName()); // Throws exception
 			String oldTitle = bookmark.getTitle();
-			FormDialog dl = new FormDialog();
-			dl.setFormDialog(bookmark.getURL(), bookmark.getTitle(), bookmark.getDescription(), bookmark.getTags());
-			dl.setVisible(true);
+			// TODO REFACTOR: Move to the MainGui class
+			FormDialog formDialog = new FormDialog();
+			formDialog.setFormDialog(bookmark.getURL(), bookmark.getTitle(), bookmark.getDescription(), bookmark.getTags());
+			formDialog.setVisible(true);
 
-			String title = dl.getTitleText();
-			String url = dl.getUrlText();
-			String desc = dl.getDescriptionText();
-			String[] tags = dl.getTagsText().split(", ");
+			String title = formDialog.getTitleText();
+			String url = formDialog.getUrlText();
+			String desc = formDialog.getDescriptionText();
+			String[] tags = formDialog.getTagsText().split(", ");
 
 			// If statement that'll take care of cancel
-			if (dl.canceledHit()) {
+			if (formDialog.canceledHit()) {
 				return;
 			}
 
@@ -116,7 +121,7 @@ public class Controller {
 
 			assert !oldTitle.equals(title) : "Titles match but aren't suppose to.";
 			if (!oldTitle.equals(title)) {
-				System.out.println("Here");
+				// TODO REFACTOR: Move to MainGui class
 				DefaultListModel<ListMenuItem> listModel = view.getListModel();
 				listModel.removeAllElements();
 				listModel.clear();
@@ -141,7 +146,8 @@ public class Controller {
 		System.out.println("copy operation");
 		ListMenuItem item = view.getItemList().getSelectedValue();
 		try {
-			Bookmark bookmark = model.getBookmarkByTitle(item.getItemName()); // Throws exception
+			// TODO REFACTOR: Move to the Model class
+			Bookmark bookmark = model.getBookmarkByTitle(item.getItemName()); // Throws BookmarkException
 			StringSelection urlString = new StringSelection(bookmark.getURL());
 			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 			clipboard.setContents(urlString, urlString);
@@ -158,10 +164,11 @@ public class Controller {
 			JList viewList = view.getItemList();
 			viewList.clearSelection();
 			viewList.revalidate();
-			Bookmark bookmark = model.getBookmarkByTitle(item.getItemName()); // Throws exception
+			Bookmark bookmark = model.getBookmarkByTitle(item.getItemName()); // Throws BookmarkException
 			assert bookmark.getTitle() == item.getItemName() : String.format("Doesn't match - %s : %s", bookmark.getTitle(), item.getItemName());
 			model.deleteBookmark(bookmark);
 
+			// TODO REFACTOR: Move to MainGui class
 			DefaultListModel<ListMenuItem> listModel = view.getListModel();
 			listModel.removeAllElements();
 			listModel.clear();
@@ -183,6 +190,7 @@ public class Controller {
 	// Inner classes
 	// Button listeners
 	class newButtonListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("new fired");
 			newOperation();
@@ -190,6 +198,7 @@ public class Controller {
 	} // End of newListener
 
 	class editButtonListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("edit fired");
 			editOperation();
@@ -197,6 +206,7 @@ public class Controller {
 	} // End of editListener
 
 	class copyButtonListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("copy fired");
 			copyOperation();
@@ -204,6 +214,7 @@ public class Controller {
 	} // End of copyListener
 
 	class deleteButtonListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("delete fired");
 			deleteOperation();
@@ -211,12 +222,14 @@ public class Controller {
 	} // End of deleteListener
 
 	class searchButtonListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("search fired");
 			String searchQuery = view.getSearchFieldText();
 
 			try {
-				Bookmark bookmark = model.getBookmarkByTitle(searchQuery); // Throws exception
+				// TODO REFACTOR: Move some of this to MainGui
+				Bookmark bookmark = model.getBookmarkByTitle(searchQuery); // Throws BookmarkException
 				System.out.println(bookmark);
 				DefaultListModel<ListMenuItem> listModel = view.getListModel();
 				listModel.removeAllElements();
@@ -230,8 +243,10 @@ public class Controller {
 	} // End of searchListener
 
 	class homeButtonListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("home fired");
+			// TODO REFACTOR: Move to MainGui as it's pertains to it
 			DefaultListModel<ListMenuItem> listModel = view.getListModel();
 			listModel.removeAllElements();
 			listModel.clear();
@@ -241,28 +256,32 @@ public class Controller {
 			for (Bookmark b : bookmarkQueue) {
 				listModel.addElement(new ListMenuItem(b.getTitle(), b.getDescription()));
 			}
-		}
+		} // End of actionPerformed
 	} // End of homeButtonListener
 
 	// Menu bar listeners
 	// TODO Implement their functionality
 	class menuNewListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("new listener fired");
 		}
 	}
 
 	class menuOpenListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("open listener fired");
+			// TODO REFACTOR: Move to MainGui and then return reference to get data from it
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.showOpenDialog(view.getMainFrame());
 
 			// TODO: Change to handle errors properly
 			System.out.println(fileChooser.getSelectedFile().getAbsolutePath());
 			try {
-				model.inputDataFile(fileChooser.getSelectedFile().getAbsolutePath());
+				model.inputDataFile(fileChooser.getSelectedFile().getAbsolutePath()); // Throws IOException
 
+				// TODO CLEAN: Some of this pretains to the MainGui class and should be moved there
 				LinkedList<Bookmark> bookmarkQueue = model.getQueueFromAVL();
 				assert bookmarkQueue != null : "bookmarkQueue is null";
 
@@ -272,23 +291,25 @@ public class Controller {
 				DefaultListModel<ListMenuItem> listModel = view.getListModel();
 				assert listModel != null : "listModel is null";
 
-				for (Bookmark b : bookmarkQueue) {
-					listModel.addElement(new ListMenuItem(b.getTitle(), b.getDescription()));
+				for (Bookmark bkm : bookmarkQueue) {
+					listModel.addElement(new ListMenuItem(bkm.getTitle(), bkm.getDescription()));
 				}
 			} // End try
-			catch(IOException e) {
-				System.out.println(e.getMessage());
+			catch(IOException ioEx) {
+				System.out.println(ioEx.getMessage());
 			}
-			catch(Exception e) {
-				System.out.println(e.getMessage());
-				System.out.println(e.getStackTrace());
+			catch(Exception ex) {
+				System.out.println(ex.getMessage());
+				System.out.println(ex.getStackTrace());
 			} // End try-catch
 		} // End of actionPerformed
 	} // End of menuOpenListener
 
 	class menuSaveListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("save listener fired");
+			// TODO REFACTOR: Move to MainGui
 			JFileChooser fileSaver = new JFileChooser();
 			fileSaver.showSaveDialog(view.getMainFrame());
 
@@ -298,7 +319,7 @@ public class Controller {
 			StringBuilder jsonContents = model.createJsonArray();
 
 			try {
-				model.saveContentsToFile(filePath);
+				model.saveContentsToFile(filePath); // Throws IOException
 			}
 			catch (IOException ioEx) {
 				System.out.println(ioEx.getMessage());
@@ -306,12 +327,14 @@ public class Controller {
 			catch (Exception ex) {
 				System.out.println(ex.getMessage());
 			}
-		}
+		} // End of actionPerformed
 	} // End of menuSaveListener
 
 	class menuSaveAsListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("save as listener fired");
+			// TODO REFACTOR: Move to MainGui
 			JFileChooser fileSaver = new JFileChooser();
 			fileSaver.showSaveDialog(view.getMainFrame());
 
@@ -321,7 +344,7 @@ public class Controller {
 			StringBuilder jsonContents = model.createJsonArray();
 
 			try {
-				model.saveContentsToFile(filePath);
+				model.saveContentsToFile(filePath); // Throws IOException
 			}
 			catch (IOException ioEx) {
 				System.out.println(ioEx.getMessage());
@@ -329,13 +352,15 @@ public class Controller {
 			catch (Exception ex) {
 				System.out.println(ex.getMessage());
 			}
-		}
+		} // End of actionPerformed
 	} // End menuSaveAsListener
 
 	// This listener will be skipped for as it'll be used for a specific feature of the application
-	// TODO: Move to the view class (MainGui)
+	// TODO REFACTOR: Move to the view class (MainGui)
 	class menuExportListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event) {
+			// TODO CLEAN: Refactor this so it's in the MainGui class and makes sense
 			System.out.println("export as listener fired");
 			JFileChooser fileExporter = new JFileChooser();
 			fileExporter.setAcceptAllFileFilterUsed(false);
@@ -354,10 +379,11 @@ public class Controller {
 
 			fileExporter.showSaveDialog(view.getMainFrame());
 			// saveFile using fileSaver
-		}
+		} // End of actionPerformed
 	} // End of menuExportListener
 
 	class menuCopyListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("copy listener fired");
 			copyOperation();
@@ -365,6 +391,7 @@ public class Controller {
 	}
 
 	class menuNewItemListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("new item listener fired");
 			newOperation();
@@ -372,6 +399,7 @@ public class Controller {
 	}
 
 	class menuEditItemListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("edit item listener fired");
 			editOperation();
@@ -379,6 +407,7 @@ public class Controller {
 	}
 
 	class menuDeleteItemListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("delete item listener fired");
 			deleteOperation();
@@ -386,16 +415,20 @@ public class Controller {
 	}
 
 	class menuDocumentationItemListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("documentation item listener fired");
 		}
 	}
 
 	class menuAboutItemListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("about item listener fired");
-			AboutDialog ad = new AboutDialog();
-			ad.setVisible(true);
+			// TODO CLEAN: Refactor to have a better name
+			// TODO REFACTOR: Should be moved to the MainGui class
+			AboutDialog aboutDialog = new AboutDialog();
+			aboutDialog.setVisible(true);
 		}
 	}
 
@@ -403,6 +436,7 @@ public class Controller {
 	// Note: The following code was made using this reference
 	// https://stackoverflow.com/questions/13800775/find-selected-item-of-a-jlist-and-display-it-in-real-time
 	class listListener implements ListSelectionListener {
+		// TODO CLEAN: Refactor for better reading
 		@Override
 		public void valueChanged(ListSelectionEvent arg0) {
 			if (!arg0.getValueIsAdjusting()) {
@@ -413,6 +447,6 @@ public class Controller {
 				}
 				view.getDescrptionBox().setText(item.getDescription());
 			}
-		}
+		} // End of valueChanged
 	} // End of listListener
 } // End of Controller

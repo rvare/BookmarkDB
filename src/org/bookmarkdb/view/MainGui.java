@@ -9,6 +9,8 @@ import java.io.*;
 import org.bookmarkdb.view.GuiForm;
 import org.bookmarkdb.view.ListMenuItem;
 
+// Should make most of the attributes have `final` so they don't get accidentally changed
+
 public class MainGui {
 	private JFrame mainFrame;
 
@@ -51,105 +53,103 @@ public class MainGui {
 	public MainGui() {
 		System.out.println("Viewer constructor");
 		// Create main frame
-		mainFrame = new JFrame("Bookmark DB");
-		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.mainFrame = new JFrame("Bookmark DB");
+		this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 
 		// Create menu bar
-		menuBar = new JMenuBar();
+		this.menuBar = new JMenuBar();
 	
 		// Create File menu and its items
 		JMenu fileMenu = new JMenu("File");
 
-		newMenuItem = new JMenuItem("New");
+		this.newMenuItem = new JMenuItem("New");
 		fileMenu.add(newMenuItem);
 
-		openMenuItem = new JMenuItem("Open");
+		this.openMenuItem = new JMenuItem("Open");
 		fileMenu.add(openMenuItem);
 
-		saveMenuItem = new JMenuItem("Save");
+		this.saveMenuItem = new JMenuItem("Save");
 		fileMenu.add(saveMenuItem);
 
-		saveAsMenuItem = new JMenuItem("Save As");
+		this.saveAsMenuItem = new JMenuItem("Save As");
 		fileMenu.add(saveAsMenuItem);
 
-		exportMenuItem = new JMenuItem("Export");
+		this.exportMenuItem = new JMenuItem("Export");
 		fileMenu.add(exportMenuItem);
-
 
 		// Create Edit menu and its items
 		JMenu editMenu = new JMenu("Edit");
 
-		copyMenuItem = new JMenuItem("Copy");
+		this.copyMenuItem = new JMenuItem("Copy");
 		editMenu.add(copyMenuItem);
 
-		newItemMenuItem = new JMenuItem("New Item");
+		this.newItemMenuItem = new JMenuItem("New Item");
 		editMenu.add(newItemMenuItem);
 
-		editItemMenuItem = new JMenuItem("Edit Item");
+		this.editItemMenuItem = new JMenuItem("Edit Item");
 		editMenu.add(editItemMenuItem);
 
-		deleteItemMenuItem = new JMenuItem("Delete Item");
+		this.deleteItemMenuItem = new JMenuItem("Delete Item");
 		editMenu.add(deleteItemMenuItem);
 
 		// Create Help menu and its items
 		JMenu helpMenu = new JMenu("Help");
 
-		docMenuItem = new JMenuItem("Documentation");
+		this.docMenuItem = new JMenuItem("Documentation");
 		helpMenu.add(docMenuItem);
 
-		aboutMenuItem = new JMenuItem("About");
+		this.aboutMenuItem = new JMenuItem("About");
 		helpMenu.add(aboutMenuItem);
 
 		// Add all menu items to the menu bar
-		menuBar.add(fileMenu);
-		menuBar.add(editMenu);
-		menuBar.add(helpMenu);
-		mainFrame.setJMenuBar(menuBar);
+		this.menuBar.add(fileMenu);
+		this.menuBar.add(editMenu);
+		this.menuBar.add(helpMenu);
+		this.mainFrame.setJMenuBar(menuBar);
+
 
 		// Create Buttons
-		homeButton = new JButton("Home");
-		newButton = new JButton("New");
-		editButton = new JButton("Edit");
-		copyButton = new JButton("Copy");
-		deleteButton = new JButton("Delete");
-		searchField = new JTextField(30);
-		searchButton = new JButton("Search");
+		this.homeButton = new JButton("Home");
+		this.newButton = new JButton("New");
+		this.editButton = new JButton("Edit");
+		this.copyButton = new JButton("Copy");
+		this.deleteButton = new JButton("Delete");
+		this.searchField = new JTextField(30);
+		this.searchButton = new JButton("Search");
 
-		buttonPanel = new JPanel();
-		buttonPanel.add(homeButton);
-		buttonPanel.add(newButton);
-		buttonPanel.add(editButton);
-		buttonPanel.add(deleteButton);
-		buttonPanel.add(copyButton);
-		buttonPanel.add(searchField);
-		buttonPanel.add(searchButton);
+		this.buttonPanel = new JPanel();
+		this.buttonPanel.add(homeButton);
+		this.buttonPanel.add(newButton);
+		this.buttonPanel.add(editButton);
+		this.buttonPanel.add(deleteButton);
+		this.buttonPanel.add(copyButton);
+		this.buttonPanel.add(searchField);
+		this.buttonPanel.add(searchButton);
 
-		mainFrame.getContentPane().add(BorderLayout.NORTH, buttonPanel);
+		this.mainFrame.getContentPane().add(BorderLayout.NORTH, buttonPanel);
 
 		// TODO: Clean up for better reading
 		// TODO: Get rid of test items and add to the list instead
 		// ListMenuItem[] item = {new ListMenuItem("Test1", "Description"), new ListMenuItem("Test2", "Description 2")};
-		listModel = new DefaultListModel<ListMenuItem>();
-		// listModel.addElement(new ListMenuItem("Test1", "Description"));
-		// listModel.addElement(new ListMenuItem("Test2", "Description 2"));
+		this.listModel = new DefaultListModel<ListMenuItem>();
 
-		itemList = new JList<ListMenuItem>();
-		itemList.setModel(listModel);
-		mainFrame.getContentPane().add(BorderLayout.CENTER, itemList);
+		this.itemList = new JList<ListMenuItem>();
+		this.itemList.setModel(listModel);
+		this.mainFrame.getContentPane().add(BorderLayout.CENTER, itemList);
 
 		// Create description area
 		// TODO: Clean this up for better reading
-		descriptionBox = new JTextArea(10, 10); // Sets how many characters by height and width, not by pixels
-		descriptionPanel = new JPanel();
+		this.descriptionBox = new JTextArea(10, 10); // Sets how many characters by height and width, not by pixels
+		this.descriptionPanel = new JPanel();
 		JScrollPane descriptionBoxScroller = new JScrollPane(descriptionBox);
 
 		descriptionBoxScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		descriptionBoxScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		descriptionPanel.add(descriptionBoxScroller);
-		mainFrame.getContentPane().add(BorderLayout.SOUTH, descriptionBoxScroller);
+		this.descriptionPanel.add(descriptionBoxScroller);
+		this.mainFrame.getContentPane().add(BorderLayout.SOUTH, descriptionBoxScroller);
 
-		// Set mainFrame's width and height
-		mainFrame.setSize(WIDTH, HEIGHT);
+		this.mainFrame.setSize(WIDTH, HEIGHT); // Set mainFrame's width and height
 	} // End Default constructor
 
 	// Getters
@@ -169,104 +169,85 @@ public class MainGui {
 		return searchField.getText();
 	}
 
-	// Setters
+	// Add Listeners
 	public void addHomeButtonListener(ActionListener homeButtonListener) {
-		homeButton.addActionListener(homeButtonListener);
+		this.homeButton.addActionListener(homeButtonListener);
 	}
 
 	public void addNewButtonListener(ActionListener newButtonListener) {
-		newButton.addActionListener(newButtonListener);
+		this.newButton.addActionListener(newButtonListener);
 	}
 
 	public void addEditButtonListener(ActionListener editButtonListener) {
-		editButton.addActionListener(editButtonListener);
+		this.editButton.addActionListener(editButtonListener);
 	}
 
 	public void addDeleteButtonListener(ActionListener deleteButtonListener) {
-		deleteButton.addActionListener(deleteButtonListener);
+		this.deleteButton.addActionListener(deleteButtonListener);
 	}
 
 	public void addCopyButtonListener(ActionListener copyButtonListener) {
-		copyButton.addActionListener(copyButtonListener);
+		this.copyButton.addActionListener(copyButtonListener);
 	}
 
 	public void addSearchButtonListener(ActionListener searchButtonListener) {
-		searchButton.addActionListener(searchButtonListener);
+		this.searchButton.addActionListener(searchButtonListener);
 	}
 
 	public void addMenuNewListener(ActionListener menuNewListener) {
-		newMenuItem.addActionListener(menuNewListener);
+		this.newMenuItem.addActionListener(menuNewListener);
 	}
 
 	public void addMenuOpenListener(ActionListener menuOpenListener) {
-		openMenuItem.addActionListener(menuOpenListener);
+		this.openMenuItem.addActionListener(menuOpenListener);
 	}
 
 	public void addMenuSaveListener(ActionListener menuSaveListener) {
-		saveMenuItem.addActionListener(menuSaveListener);
+		this.saveMenuItem.addActionListener(menuSaveListener);
 	}
 
 	public void addMenuSaveAsListener(ActionListener menuSaveAsListener) {
-		saveAsMenuItem.addActionListener(menuSaveAsListener);
+		this.saveAsMenuItem.addActionListener(menuSaveAsListener);
 	}
 
 	public void addMenuExportListener(ActionListener menuExportListener) {
-		exportMenuItem.addActionListener(menuExportListener);
+		this.exportMenuItem.addActionListener(menuExportListener);
 	}
 
 	public void addMenuCopyListener(ActionListener menuCopyListener) {
-		copyMenuItem.addActionListener(menuCopyListener);
+		this.copyMenuItem.addActionListener(menuCopyListener);
 	}
 
 	public void addMenuNewItemListener(ActionListener menuNewItemListener) {
-		newItemMenuItem.addActionListener(menuNewItemListener);
+		this.newItemMenuItem.addActionListener(menuNewItemListener);
 	}
 
 	public void addMenuEditItemListener(ActionListener menuEditListener) {
-		editItemMenuItem.addActionListener(menuEditListener);
+		this.editItemMenuItem.addActionListener(menuEditListener);
 	}
 
 	public void addMenuDeleteItemListener(ActionListener menuDeleteItemListener) {
-		deleteItemMenuItem.addActionListener(menuDeleteItemListener);
+		this.deleteItemMenuItem.addActionListener(menuDeleteItemListener);
 	}
 
 	public void addMenuDocumentationItemListener(ActionListener menuDocumentationItemListener) {
-		docMenuItem.addActionListener(menuDocumentationItemListener);
+		this.docMenuItem.addActionListener(menuDocumentationItemListener);
 	}
 
 	public void addMenuAboutItemListener(ActionListener menuAboutItemListener) {
-		aboutMenuItem.addActionListener(menuAboutItemListener);
+		this.aboutMenuItem.addActionListener(menuAboutItemListener);
 	}
 
 	public void addListSelectionListenerToList(ListSelectionListener ll) {
-		itemList.addListSelectionListener(ll);
+		this.itemList.addListSelectionListener(ll);
 	}
 
 	// Methods
 	public void showMainFrame() {
-		mainFrame.setVisible(true);
+		this.mainFrame.setVisible(true);
 	}
 
 	public DefaultListModel<ListMenuItem> getListModel() {
 		return this.listModel;
 	}
 } // End of MainGui
-
-class TestItem {
-	private String itemName;
-	private String itemDescription;
-
-	public TestItem(final String itemName, final String desc) {
-		this.itemName = itemName;
-		this.itemDescription = desc;
-	}
-	
-	@Override
-	public String toString() {
-		return this.itemName;
-	}
-	
-	public String getDescription() {
-		return this.itemDescription;
-	}
-}

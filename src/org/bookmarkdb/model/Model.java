@@ -13,6 +13,8 @@ import org.bookmarkdb.model.BookmarkException;
 import org.bookmarkdb.model.NoTagException;
 import org.bookmarkdb.model.AVL_Tree;
 
+// TODO REFACTOR: Rewrite variables names that are one or two characters longs, but not all of them will need to be
+
 public class Model {
 	private final HashMap<String, LinkedList<Bookmark>> tagsIndex;
 	private final AVL_Tree avl_tree;
@@ -65,6 +67,7 @@ public class Model {
 		addNewBookmark(newTitle, bookmark);
 	}
 
+	// TODO: Determine if this is still needed
 	public void setBookmarkTags(final String title, final String[] tags) { // Not sure if this is needed
 
 	}
@@ -81,6 +84,7 @@ public class Model {
 		bookmark.setDateModified(LocalDateTime.now());
 	}
 
+	// TODO: Determine if this is still needed
 	public void setBookmarkDateModified(final String title, final Date date) { // Not sure if this is needed due to how the other methods are made
 
 	}
@@ -89,9 +93,9 @@ public class Model {
 	// TODO: Rewrite this so that it uses two threads, one for AVL_Tree insertion and one for tagIndex insertrion
 	public void addNewBookmark(final String key, final Bookmark bookmark) { // TODO: Handle the case when a node has the same key
 		avl_tree.setRoot(avl_tree.insert(avl_tree.getRoot(), key, bookmark));
-		ArrayList<String> tags = bookmark.getTags();
+		ArrayList<String> bookmarkTags = bookmark.getTags();
 
-		for (String tag : tags) {
+		for (String tag : bookmarkTags) {
 			if (tagsIndex.containsKey(tag) == false) {
 				tagsIndex.put(tag, new LinkedList<Bookmark>());
 			}
@@ -115,8 +119,8 @@ public class Model {
 		ArrayList<String> bookmarkTags = bookmark.getTags();
 
 		// TODO: Fix this so it doesn't remove a tag when there's a list there. Only remove when null.
-		for (String i : bookmarkTags) { 
-			LinkedList<Bookmark> bucket = tagsIndex.get(i);
+		for (String tag : bookmarkTags) { 
+			LinkedList<Bookmark> bucket = tagsIndex.get(tag);
 			bucket.remove(bookmark);
 		}
 	} // End of deleteBookmark
@@ -124,19 +128,18 @@ public class Model {
 	public JSONArray openFile(final String filePath) throws IOException {
 		String jsonFileContents = Files.readString(Paths.get(filePath));
 		JSONArray bookmarkJSONArray = new JSONArray(jsonFileContents);
-		// System.out.println(bookmarkJSONArray);
 
 		return bookmarkJSONArray;
 	} // End of openFile
 
 	public Bookmark processJson(final String jsonLine) {
-		JSONObject jo = new JSONObject(jsonLine);
+		JSONObject jsonObject = new JSONObject(jsonLine);
 
-		String url = jo.getString("url");
-		String title = jo.getString("title");
-		String description = jo.getString("description");
+		String url = jsonObject.getString("url");
+		String title = jsonObject.getString("title");
+		String description = jsonObject.getString("description");
 
-		JSONArray jsonTags = jo.getJSONArray("tags");
+		JSONArray jsonTags = jsonObject.getJSONArray("tags");
 		Object[] objArr = jsonTags.toList().toArray();
 
 		String[] strArr = Arrays.copyOf(objArr, objArr.length, String[].class);
@@ -160,11 +163,10 @@ public class Model {
 	public void inputDataFile(final String filePath) throws IOException {
 		JSONArray jsonFileContents = openFile(filePath); // This line throws an IOException
 
-		Bookmark bk;
 		Iterator iter = jsonFileContents.iterator();
 		while (iter.hasNext()) {
-			bk = processJson(iter.next().toString());
-			addNewBookmark(bk.getTitle(), bk);
+			Bookmark bkm = processJson(iter.next().toString());
+			addNewBookmark(bkm.getTitle(), bkm);
 		}
 	} // End of inputDataFile
 
@@ -195,11 +197,11 @@ public class Model {
 		JSONWriter jsonWriter = new JSONWriter(jsonContents);
 
 		jsonWriter.array();
-		for (Bookmark b : bookmarkList) {
-			jsonWriter.object().key("url").value(b.getURL())
-								.key("title").value(b.getTitle())
-								.key("description").value(b.getDescription())
-								.key("tags").value(b.getTags())
+		for (Bookmark bkm : bookmarkList) {
+			jsonWriter.object().key("url").value(bkm.getURL())
+								.key("title").value(bkm.getTitle())
+								.key("description").value(bkm.getDescription())
+								.key("tags").value(bkm.getTags())
 					.endObject();
 		}
 		jsonWriter.endArray();

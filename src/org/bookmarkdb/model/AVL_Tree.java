@@ -7,7 +7,7 @@ import java.util.LinkedList;
 public class AVL_Tree {
 	private AVL_Node root;
 	
-	public LinkedList<Bookmark> queue;
+	public LinkedList<Bookmark> queue; // Used to for inorder displaying for the JList class
 
 	public AVL_Tree() {
 		queue = new LinkedList<Bookmark>();
@@ -131,11 +131,15 @@ public class AVL_Tree {
 			int leftHeight = height(leaf.getLeftNode()); // Get height of left node
 			int rightHeight = height(leaf.getRightNode()); // Get height of right node
 
-			if (leftHeight > rightHeight)
+			// TODO: DONE Make this match the other if statements for consistency
+			if (leftHeight > rightHeight) {
 				return leftHeight + 1;
-			else
+			}
+			else {
 				return rightHeight + 1;
+			}
 		}
+
 		return -1;
 	} // End height
 
@@ -173,7 +177,6 @@ public class AVL_Tree {
 	public void inOrderTraversal(AVL_Node leaf) {
 		if (leaf != null) {
 			inOrderTraversal(leaf.getLeftNode());
-			// System.out.println(leaf.getKey());
 			queue.add(leaf.getBookmark());
 			inOrderTraversal(leaf.getRightNode());
 		}
@@ -196,7 +199,7 @@ class AVL_Node {
 
 	public AVL_Node() { } // Default constructor; does nothing
 
-	public AVL_Node(String data, Bookmark bookmark) {
+	public AVL_Node(final String data, final Bookmark bookmark) {
 		this.key = data;
 		this.bookmark = bookmark;
 	}

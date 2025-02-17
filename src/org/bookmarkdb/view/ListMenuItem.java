@@ -4,14 +4,9 @@ public class ListMenuItem {
 	private String itemName;
 	private String itemDescription;
 
-	public ListMenuItem(String itemName, String desc) {
+	public ListMenuItem(final String itemName, final String desc) {
 		this.itemName = itemName;
 		this.itemDescription = desc;
-	}
-	
-	@Override
-	public String toString() {
-		return this.itemName;
 	}
 
 	public String getItemName() {
@@ -24,5 +19,10 @@ public class ListMenuItem {
 
 	public void setDescription(final String newDesc) {
 		this.itemDescription = newDesc;
+	}
+
+	@Override
+	public String toString() {
+		return this.itemName;
 	}
 }

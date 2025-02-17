@@ -7,6 +7,9 @@ import javax.swing.event.*;
 import java.io.*;
 import java.util.*;
 
+// TODO CLEAN: Clean up for better reading
+// TODO: Create some constants for the strings for easy editing
+
 public class AboutDialog extends JDialog {
 	public AboutDialog() {
 		System.out.println("AboutDialog constructor");
