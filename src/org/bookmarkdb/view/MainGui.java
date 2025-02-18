@@ -8,6 +8,8 @@ import java.io.*;
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.Arrays;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.bookmarkdb.view.GuiForm;
 import org.bookmarkdb.view.ListMenuItem;
@@ -133,8 +135,7 @@ public class MainGui {
 		this.mainFrame.getContentPane().add(BorderLayout.NORTH, buttonPanel);
 
 		// TODO: Clean up for better reading
-		// TODO: Get rid of test items and add to the list instead
-		// ListMenuItem[] item = {new ListMenuItem("Test1", "Description"), new ListMenuItem("Test2", "Description 2")};
+		// TODO: DONE Get rid of test items and add to the list instead
 		this.listModel = new DefaultListModel<ListMenuItem>();
 
 		this.itemList = new JList<ListMenuItem>();
@@ -283,5 +284,37 @@ public class MainGui {
 		listModel.removeAllElements();
 		listModel.clear();
 		listModel.addElement(searchResult);
+	}
+
+	public JFileChooser createFileChooserWindow() {
+		JFileChooser fileSaver = new JFileChooser();
+		fileSaver.showSaveDialog(getMainFrame());
+		return fileSaver;
+	}
+
+	public JFileChooser createExportChooserWindow() {
+		JFileChooser fileExporter = new JFileChooser();
+		fileExporter.setAcceptAllFileFilterUsed(false);
+
+		FileNameExtensionFilter htmlFilter = new FileNameExtensionFilter("HTML file", "html");
+		fileExporter.addChoosableFileFilter(htmlFilter);
+
+		FileNameExtensionFilter mdFilter = new FileNameExtensionFilter("Markdown", "md");
+		fileExporter.addChoosableFileFilter(mdFilter);
+			
+		FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("Text", "txt");
+		fileExporter.addChoosableFileFilter(txtFilter);
+
+		FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter("XML", "xml");
+		fileExporter.addChoosableFileFilter(xmlFilter);
+
+		fileExporter.showSaveDialog(getMainFrame());
+
+		return fileExporter;
+	}
+
+	public void displayAboutDialogWindow() {
+		AboutDialog aboutDialog = new AboutDialog();
+		aboutDialog.setVisible(true);
 	}
 } // End of MainGui
