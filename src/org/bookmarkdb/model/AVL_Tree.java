@@ -99,7 +99,7 @@ public class AVL_Tree {
 		}
 
 		return foundBookmark;
-	} // End of searchBookmark
+	}
 
 	public AVL_Node rebalance(AVL_Node leaf) {
 		leaf.setHeight(Math.max(height(leaf.getLeftNode()), height(leaf.getRightNode())) + 1);
@@ -124,7 +124,7 @@ public class AVL_Tree {
 		}
 
 		return leaf;
-	} // End rebalance
+	}
 
 	private int height(AVL_Node leaf) {
 		if (leaf != null) {
@@ -141,7 +141,7 @@ public class AVL_Tree {
 		}
 
 		return -1;
-	} // End height
+	}
 
 	// TODO: Change these to not be one character variables names
 	// Rotation methods

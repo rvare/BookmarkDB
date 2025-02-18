@@ -28,7 +28,9 @@ public class FormDialog extends JDialog {
 
 	private boolean cancelFlag;
 
-	// TODO CLEAN: Clean up comments and make it more readable
+	private final int WIDTH = 500;
+	private final int HEIGHT = 300;
+
 	public FormDialog() {
 		System.out.println("GuiForm constructor");
 		// setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -38,6 +40,7 @@ public class FormDialog extends JDialog {
 		formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
 		this.getContentPane().add(BorderLayout.CENTER, formPanel);
 
+		// URL input
 		Box urlBox = new Box(BoxLayout.X_AXIS);
 		JLabel urlLabel = new JLabel("URL: ");
 		this.textFieldUrl = new JTextField(10);
@@ -45,6 +48,7 @@ public class FormDialog extends JDialog {
 		urlBox.add(textFieldUrl);
 		formPanel.add(urlBox);
 
+		// Title input
 		Box titleBox = new Box(BoxLayout.X_AXIS);
 		JLabel titleLabel = new JLabel("Title: ");
 		this.textFieldTitle = new JTextField(10);
@@ -52,14 +56,17 @@ public class FormDialog extends JDialog {
 		titleBox.add(textFieldTitle);
 		formPanel.add(titleBox);
 
-		// TODO: Fix graphical issue
-		Box descriptionBox = new Box(BoxLayout.Y_AXIS);
+		// Will need to change so the label is on top rather than on the side, but will fix later
+		// Description input
+		Box descriptionBox = new Box(BoxLayout.X_AXIS);
 		JLabel descriptionLabel = new JLabel("Description: ");
 		this.textAreaDescription = new JTextArea(10, 10);
+		this.textAreaDescription.setLineWrap(true);
 		descriptionBox.add(descriptionLabel);
 		descriptionBox.add(textAreaDescription);
 		formPanel.add(descriptionBox);
 
+		// Tags input
 		Box tagsBox = new Box(BoxLayout.X_AXIS);
 		JLabel tagsLabel = new JLabel("Tags: ");
 		this.textFieldTags = new JTextField(10);
@@ -77,7 +84,7 @@ public class FormDialog extends JDialog {
 		formButtonPanel.add(buttonCancel);
 		this.getContentPane().add(BorderLayout.SOUTH, formButtonPanel);
 
-		this.setSize(500, 300); // TODO: Create constants
+		this.setSize(WIDTH, HEIGHT);
 		this.setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
 
 		this.cancelFlag = false;
@@ -110,7 +117,6 @@ public class FormDialog extends JDialog {
 		this.textFieldTitle.setText(title);
 		this.textAreaDescription.setText(desc);
 
-		// TODO: Change this so that it doesn't create so many String objects that get destroyed by the garbage collector
 		String tagsString = String.format("%s", tags);
 		tagsString = tagsString.replace("[", " ");
 		tagsString = tagsString.replace("]", " ");

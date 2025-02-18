@@ -16,8 +16,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.bookmarkdb.model.*;
 import org.bookmarkdb.view.*;
 
-// TODO: Refactor to add comments so that everyone knows where an exception maybe thrown and indicate what is thrown
-
 public class Controller {
 	private final MainGui view;
 	private final Model model;
@@ -69,9 +67,8 @@ public class Controller {
 	}
 	
 	// Operations
-	private void newOperation() { // TODO CLEAN: DONE Remove GUI and logic operations to GUI class and Model class respectively
+	private void newOperation() {
 		System.out.println("new operation");
-		// FormDialog formDialog = new FormDialog(); // TODO CLEAN: DONE Rename dl to a more descriptive name
 
 		FormDialog formDialog = this.view.createFormDialog();
 
@@ -87,7 +84,6 @@ public class Controller {
 		Bookmark newBookmark = new Bookmark(url, title, desc, tags);
 		model.addNewBookmark(title, newBookmark);
 
-		// TODO REFACTOR: DONE Move to the MainGui class since it's related to it
 		this.refreshViewListModel();
 	}
 
@@ -97,8 +93,10 @@ public class Controller {
 			ListMenuItem item = view.getItemList().getSelectedValue();
 			Bookmark bookmark = model.getBookmarkByTitle(item.getItemName()); // Throws exception
 			String oldTitle = bookmark.getTitle();
-			// TODO REFACTOR: DONE Move to the MainGui class
-			FormDialog formDialog = this.view.createFormDialog(bookmark.getURL(), bookmark.getTitle(), bookmark.getDescription(), bookmark.getTags());
+			FormDialog formDialog = this.view.createFormDialog(bookmark.getURL(),
+															   bookmark.getTitle(),
+															   bookmark.getDescription(),
+															   bookmark.getTags());
 
 			String newTitle = formDialog.getTitleText();
 			String newUrl = formDialog.getUrlText();
@@ -125,7 +123,7 @@ public class Controller {
 
 			assert !oldTitle.equals(newTitle) : "Titles match but aren't suppose to.";
 			if (!oldTitle.equals(newTitle)) {
-				// TODO REFACTOR: DONE Move to MainGui class
+				// TODO REFACTOR: Move to the Model class
 				this.model.deleteBookmark(bookmark);
 				bookmark.setTitle(newTitle);
 				this.model.addNewBookmark(newTitle, bookmark);
@@ -146,12 +144,11 @@ public class Controller {
 		System.out.println("copy operation");
 		ListMenuItem item = view.getItemList().getSelectedValue();
 		try {
-			// TODO REFACTOR: DONE Move to the Model class
 			this.model.copyToClipboard(item.getItemName());
 		}
 		catch(BookmarkException bkException) {
 			System.out.println(bkException.getMessage());
-		} // End try-catch
+		}
 	}
 
 	private void deleteOperation() {
@@ -165,7 +162,6 @@ public class Controller {
 			assert bookmark.getTitle() == item.getItemName() : String.format("Doesn't match - %s : %s", bookmark.getTitle(), item.getItemName());
 			model.deleteBookmark(bookmark);
 
-			// TODO REFACTOR: DONE Move to MainGui class
 			this.refreshViewListModel();
 		} // End try
 		catch(BookmarkException bkException) {
@@ -217,7 +213,6 @@ public class Controller {
 			String searchQuery = view.getSearchFieldText();
 
 			try {
-				// TODO REFACTOR: DONE Move some of this to MainGui
 				Bookmark bookmark = model.getBookmarkByTitle(searchQuery); // Throws BookmarkException
 				view.showSearchResult(new ListMenuItem(bookmark.getTitle(), bookmark.getDescription()));
 			}
@@ -231,7 +226,6 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("home fired");
-			// TODO REFACTOR: DONE Move to MainGui as it's pertains to it
 			refreshViewListModel();
 		}
 	}
@@ -249,10 +243,8 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("open listener fired");
-			// TODO REFACTOR: DONE Move to MainGui and then return reference to get data from it
 			JFileChooser fileChooser = view.createFileChooserWindow();
 
-			// TODO: DONE Change to handle errors properly
 			System.out.println(fileChooser.getSelectedFile().getAbsolutePath());
 			try {
 				model.inputDataFile(fileChooser.getSelectedFile().getAbsolutePath()); // Throws IOException
@@ -272,7 +264,6 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("save listener fired");
-			// TODO REFACTOR: DONE Move to MainGui
 			JFileChooser fileSaver = view.createFileChooserWindow();
 
 			File filePath = fileSaver.getSelectedFile();
@@ -294,7 +285,6 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("save as listener fired");
-			// TODO REFACTOR: DONE Move to MainGui
 			JFileChooser fileSaver = view.createFileChooserWindow();
 
 			File filePath = fileSaver.getSelectedFile();
@@ -319,7 +309,6 @@ public class Controller {
 	class menuExportListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			// TODO CLEAN: DONE Refactor this so it's in the MainGui class and makes sense
 			System.out.println("export as listener fired");
 			JFileChooser fileExporter = view.createExportChooserWindow();
 		}
@@ -368,8 +357,6 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("about item listener fired");
-			// TODO CLEAN: DONE Refactor to have a better name
-			// TODO REFACTOR: DONE Should be moved to the MainGui class
 			view.displayAboutDialogWindow();
 		}
 	}

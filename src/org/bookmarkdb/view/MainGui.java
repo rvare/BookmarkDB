@@ -135,7 +135,6 @@ public class MainGui {
 		this.mainFrame.getContentPane().add(BorderLayout.NORTH, buttonPanel);
 
 		// TODO: Clean up for better reading
-		// TODO: DONE Get rid of test items and add to the list instead
 		this.listModel = new DefaultListModel<ListMenuItem>();
 
 		this.itemList = new JList<ListMenuItem>();

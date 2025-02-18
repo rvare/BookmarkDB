@@ -17,8 +17,6 @@ import org.bookmarkdb.model.BookmarkException;
 import org.bookmarkdb.model.NoTagException;
 import org.bookmarkdb.model.AVL_Tree;
 
-// TODO REFACTOR: Rewrite variables names that are one or two characters longs, but not all of them will need to be
-
 public class Model {
 	private final HashMap<String, LinkedList<Bookmark>> tagsIndex;
 	private final AVL_Tree avl_tree;
@@ -88,7 +86,6 @@ public class Model {
 		bookmark.setDateModified(LocalDateTime.now());
 	}
 
-	// TODO: Determine if this is still needed
 	public void setBookmarkDateModified(final String title, final Date date) { // Not sure if this is needed due to how the other methods are made
 
 	}
@@ -107,7 +104,7 @@ public class Model {
 			LinkedList<Bookmark> bucket = tagsIndex.get(tag);
 			bucket.add(bookmark);
 		}
-	} // End of addNewBookmark
+	}
 
 	public void addNewTag(final String title, final String newTag) throws BookmarkException {
 		Bookmark bookmark = getBookmarkByTitle(title); // This line throws a BookmarkException
@@ -124,7 +121,6 @@ public class Model {
 
 	// TODO: Rewrite to use the Bookmark object in the method argument because it'll be easier to use remove() with linked list
 	public void deleteBookmark(final Bookmark bookmark) {
-		// Bookmark bookmark = getBookmarkByTitle(title); // This line throws a BookmarkException
 		avl_tree.deleteNode(avl_tree.getRoot(), bookmark.getTitle());
 
 		ArrayList<String> bookmarkTags = bookmark.getTags();
@@ -134,14 +130,14 @@ public class Model {
 			LinkedList<Bookmark> bucket = tagsIndex.get(tag);
 			bucket.remove(bookmark);
 		}
-	} // End of deleteBookmark
+	}
 
 	public JSONArray openFile(final String filePath) throws IOException {
 		String jsonFileContents = Files.readString(Paths.get(filePath));
 		JSONArray bookmarkJSONArray = new JSONArray(jsonFileContents);
 
 		return bookmarkJSONArray;
-	} // End of openFile
+	}
 
 	public Bookmark processJson(final String jsonLine) {
 		JSONObject jsonObject = new JSONObject(jsonLine);
@@ -156,7 +152,7 @@ public class Model {
 		String[] strArr = Arrays.copyOf(objArr, objArr.length, String[].class);
 
 		return new Bookmark(url, title, description, strArr);
-	} // End of processJson
+	}
 
 	public Bookmark processJson(final JSONObject jsonObj) {
 		String url = jsonObj.getString("url");
@@ -169,7 +165,7 @@ public class Model {
 		String [] strArr = Arrays.copyOf(objArr, objArr.length, String[].class);
 
 		return new Bookmark(url, title, description, strArr);
-	} // End of processJson
+	}
 
 	public void inputDataFile(final String filePath) throws IOException {
 		JSONArray jsonFileContents = openFile(filePath); // This line throws an IOException
@@ -179,7 +175,7 @@ public class Model {
 			Bookmark bkm = processJson(iter.next().toString());
 			addNewBookmark(bkm.getTitle(), bkm);
 		}
-	} // End of inputDataFile
+	}
 
 	public LinkedList<Bookmark> getQueueFromAVL() {
 		avl_tree.inOrderTraversal(avl_tree.getRoot());
@@ -210,13 +206,13 @@ public class Model {
 		jsonWriter.array();
 		for (Bookmark bkm : bookmarkList) {
 			jsonWriter.object().key("url").value(bkm.getURL())
-								.key("title").value(bkm.getTitle())
-								.key("description").value(bkm.getDescription())
-								.key("tags").value(bkm.getTags())
-					.endObject();
+							   .key("title").value(bkm.getTitle())
+							   .key("description").value(bkm.getDescription())
+							   .key("tags").value(bkm.getTags())
+					  .endObject();
 		}
 		jsonWriter.endArray();
 
 		return jsonContents;
-	} // End of createJsonArray
+	}
 } // End of Model class

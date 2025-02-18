@@ -15,12 +15,10 @@ public class Bookmark {
 	private LocalDateTime dateModified;
 
 	public Bookmark() {
-		// System.out.println("    Defualt Bookmark constructor");
 		this.tags = new ArrayList<String>();
 	}
 
 	public Bookmark(final String url, final String title, final String description, String[] tags) {
-		// System.out.println("    Non-Defualt Bookmark constructor");
 		this.url = url;
 		this.title = title;
 		this.description = description;
