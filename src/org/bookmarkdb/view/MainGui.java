@@ -13,6 +13,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.bookmarkdb.view.GuiForm;
 import org.bookmarkdb.view.ListMenuItem;
+import org.bookmarkdb.view.FormDialog;
+import org.bookmarkdb.view.TagsDialog;
 
 // Should make most of the attributes have `final` so they don't get accidentally changed
 
@@ -42,6 +44,7 @@ public class MainGui {
 	private JButton deleteButton;
 	private JButton searchButton;
 	private JTextField searchField;
+	private JButton tagsButton;
 	private JPanel buttonPanel;
 
 	// List area
@@ -52,7 +55,7 @@ public class MainGui {
 	private JTextArea descriptionBox;
 	private JPanel descriptionPanel;
 
-	private final static int WIDTH = 800;
+	private final static int WIDTH = 1000;
 	private final static int HEIGHT = 500;
 
 	public MainGui() {
@@ -122,15 +125,17 @@ public class MainGui {
 		this.deleteButton = new JButton("Delete");
 		this.searchField = new JTextField(30);
 		this.searchButton = new JButton("Search");
+		this.tagsButton = new JButton("Tags");
 
 		this.buttonPanel = new JPanel();
-		this.buttonPanel.add(homeButton);
-		this.buttonPanel.add(newButton);
-		this.buttonPanel.add(editButton);
-		this.buttonPanel.add(deleteButton);
-		this.buttonPanel.add(copyButton);
-		this.buttonPanel.add(searchField);
-		this.buttonPanel.add(searchButton);
+		this.buttonPanel.add(this.homeButton);
+		this.buttonPanel.add(this.newButton);
+		this.buttonPanel.add(this.editButton);
+		this.buttonPanel.add(this.deleteButton);
+		this.buttonPanel.add(this.copyButton);
+		this.buttonPanel.add(this.searchField);
+		this.buttonPanel.add(this.searchButton);
+		this.buttonPanel.add(this.tagsButton);
 
 		this.mainFrame.getContentPane().add(BorderLayout.NORTH, buttonPanel);
 
@@ -173,6 +178,10 @@ public class MainGui {
 	}
 
 	// Add Listeners
+	public void addTagsButtonListener(ActionListener tagsButtonListener) {
+		this.tagsButton.addActionListener(tagsButtonListener);
+	}
+
 	public void addHomeButtonListener(ActionListener homeButtonListener) {
 		this.homeButton.addActionListener(homeButtonListener);
 	}
@@ -315,5 +324,11 @@ public class MainGui {
 	public void displayAboutDialogWindow() {
 		AboutDialog aboutDialog = new AboutDialog();
 		aboutDialog.setVisible(true);
+	}
+
+	public TagsDialog createTagsDialog(String[] tagsList) {
+		TagsDialog tagsDialog = new TagsDialog(tagsList);
+		tagsDialog.setVisible(true);
+		return tagsDialog;
 	}
 } // End of MainGui

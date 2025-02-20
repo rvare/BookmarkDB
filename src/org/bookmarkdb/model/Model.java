@@ -52,9 +52,16 @@ public class Model {
 		avl_tree.inOrderTraversal(avl_tree.getRoot());
 	}
 
-	public String getTags() {
+	public String[] getTags() {
 		Object[] keyObjects = tagsIndex.keySet().toArray();
-		String stringTags = Arrays.toString(keyObjects);
+		// String stringTags = Arrays.toString(keyObjects);
+		Arrays.sort(keyObjects);
+
+		String[] stringTags = new String[keyObjects.length];
+
+		for (int i = 0; i < keyObjects.length; i++) {
+			stringTags[i] = keyObjects[i].toString();
+		}
 
 		return stringTags;
 	}

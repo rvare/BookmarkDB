@@ -48,6 +48,7 @@ public class Controller {
 		this.view.addDeleteButtonListener(new deleteButtonListener());
 		this.view.addCopyButtonListener(new copyButtonListener());
 		this.view.addSearchButtonListener(new searchButtonListener());
+		this.view.addTagsButtonListener(new tagsButtonListener());
 
 		// List listener
 		this.view.addListSelectionListenerToList(new listListener());
@@ -65,7 +66,7 @@ public class Controller {
 
 		this.view.refreshListModel(inOrderList);
 	}
-	
+
 	// Operations
 	private void newOperation() {
 		System.out.println("new operation");
@@ -227,6 +228,35 @@ public class Controller {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("home fired");
 			refreshViewListModel();
+		}
+	}
+
+	class tagsButtonListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("tags fired");
+			try {
+				String[] tagsList = model.getTags();
+				TagsDialog tagsDialog = view.createTagsDialog(tagsList);
+				String selectedTag = tagsDialog.getSelectedTag();
+
+				assert selectedTag != null : "selectedTag in tagsButtonListener is null";
+				if (tagsDialog.canceledHit()) {
+					return;
+				}
+
+				LinkedList<Bookmark> bucket = model.getBookmarksByTag(selectedTag);
+				LinkedList<ListMenuItem> inOrderList = new LinkedList<ListMenuItem>();
+
+				for (Bookmark bookmark : bucket) {
+					inOrderList.add(new ListMenuItem(bookmark.getTitle(), bookmark.getDescription()));
+				}
+
+				view.refreshListModel(inOrderList);
+			}
+			catch(NoTagException ntException) {
+				System.out.println(ntException.getMessage());
+			}
 		}
 	}
 
