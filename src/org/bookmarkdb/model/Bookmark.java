@@ -1,6 +1,6 @@
 package org.bookmarkdb.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -11,20 +11,22 @@ public class Bookmark {
 	private String title;
 	private String description;
 	private ArrayList<String> tags;
-	private LocalDateTime dateCreated;
-	private LocalDateTime dateModified;
+	private final LocalDate dateCreated;
+	private LocalDate dateModified;
 
 	public Bookmark() {
 		this.tags = new ArrayList<String>();
+		this.dateCreated = LocalDate.now();
 	}
 
-	public Bookmark(final String url, final String title, final String description, String[] tags) {
+	public Bookmark(final String url, final String title, final String description,
+					String[] tags, final String dateCreated, final String dateModified) {
 		this.url = url;
 		this.title = title;
 		this.description = description;
 		this.tags = new ArrayList<String>(Arrays.asList(tags));
-		this.dateCreated = LocalDateTime.now();
-		this.dateModified = LocalDateTime.now();
+		this.dateCreated = LocalDate.parse(dateCreated);
+		this.dateModified = LocalDate.parse(dateModified);
 	}
 
 	// Getters
@@ -44,11 +46,11 @@ public class Bookmark {
 		return this.tags;
 	}
 
-	public LocalDateTime getDateCreated() {
+	public LocalDate getDateCreated() {
 		return this.dateCreated;
 	}
 
-	public LocalDateTime getDateModified() {
+	public LocalDate getDateModified() {
 		return this.dateModified;
 	}
 	
@@ -69,7 +71,7 @@ public class Bookmark {
 		this.tags = new ArrayList<String>(Arrays.asList(tags));
 	}
 
-	public void setDateModified(final LocalDateTime dateModified) {
+	public void setDateModified(final LocalDate dateModified) {
 		this.dateModified = dateModified;
 	}
 

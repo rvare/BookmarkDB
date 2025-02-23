@@ -5,7 +5,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.awt.datatransfer.StringSelection;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -72,7 +72,7 @@ public class Model {
 
 		this.deleteBookmark(bookmark);
 		bookmark.setTitle(newTitle);
-		bookmark.setDateModified(LocalDateTime.now());
+		bookmark.setDateModified(LocalDate.now());
 		addNewBookmark(newTitle, bookmark);
 	}
 
@@ -84,13 +84,13 @@ public class Model {
 	public void setBookmarkDescription(final String title, final String newDescription) throws BookmarkException {
 		Bookmark bookmark = getBookmarkByTitle(title); // This line throws a BookmarkException
 		bookmark.setDescription(newDescription);
-		bookmark.setDateModified(LocalDateTime.now());
+		bookmark.setDateModified(LocalDate.now());
 	}
 
 	public void setBookmarkURL(final String title, final String newUrl) throws BookmarkException {
 		Bookmark bookmark = getBookmarkByTitle(title); // This line throws a BookmarkException
 		bookmark.setURL(newUrl);
-		bookmark.setDateModified(LocalDateTime.now());
+		bookmark.setDateModified(LocalDate.now());
 	}
 
 	public void setBookmarkDateModified(final String title, final Date date) { // Not sure if this is needed due to how the other methods are made
@@ -116,7 +116,7 @@ public class Model {
 	public void addNewTag(final String title, final String newTag) throws BookmarkException {
 		Bookmark bookmark = getBookmarkByTitle(title); // This line throws a BookmarkException
 		bookmark.addNewTag(newTag);
-		bookmark.setDateModified(LocalDateTime.now());
+		bookmark.setDateModified(LocalDate.now());
 	}
 
 	public void copyToClipboard(final String title) throws BookmarkException {
@@ -158,7 +158,10 @@ public class Model {
 
 		String[] strArr = Arrays.copyOf(objArr, objArr.length, String[].class);
 
-		return new Bookmark(url, title, description, strArr);
+		String dateCreated = jsonObject.getString("dateCreated");
+		String dateModified = jsonObject.getString("dateModified");
+
+		return new Bookmark(url, title, description, strArr, dateCreated, dateModified);
 	}
 
 	public Bookmark processJson(final JSONObject jsonObj) {
@@ -171,7 +174,10 @@ public class Model {
 
 		String [] strArr = Arrays.copyOf(objArr, objArr.length, String[].class);
 
-		return new Bookmark(url, title, description, strArr);
+		String dateCreated = jsonObj.getString("dateCreated");
+		String dateModified = jsonObj.getString("dateModified");	
+
+		return new Bookmark(url, title, description, strArr, dateCreated, dateModified);
 	}
 
 	public void inputDataFile(final String filePath) throws IOException {
@@ -216,6 +222,8 @@ public class Model {
 							   .key("title").value(bkm.getTitle())
 							   .key("description").value(bkm.getDescription())
 							   .key("tags").value(bkm.getTags())
+							   .key("dateCreated").value(bkm.getDateCreated())
+							   .key("dateModified").value(bkm.getDateModified())
 					  .endObject();
 		}
 		jsonWriter.endArray();

@@ -12,6 +12,7 @@ import java.awt.datatransfer.Clipboard;
 import java.util.*;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.time.LocalDate;
 
 import org.bookmarkdb.model.*;
 import org.bookmarkdb.view.*;
@@ -82,7 +83,11 @@ public class Controller {
 		String url = formDialog.getUrlText();
 		String desc = formDialog.getDescriptionText();
 		String[] tags = formDialog.getTagsText().split(", ");
-		Bookmark newBookmark = new Bookmark(url, title, desc, tags);
+		// LocalDateTime dateCreated = LocalDateTime.now();
+		// LocalDateTime dateModified = LocalDateTime.now();
+		String dateCreated = LocalDate.now().toString();
+		String dateModified = LocalDate.now().toString();
+		Bookmark newBookmark = new Bookmark(url, title, desc, tags, dateCreated, dateModified);
 		model.addNewBookmark(title, newBookmark);
 
 		this.refreshViewListModel();
