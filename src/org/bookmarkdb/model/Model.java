@@ -21,10 +21,18 @@ public class Model {
 	private final HashMap<String, LinkedList<Bookmark>> tagsIndex;
 	private final AVL_Tree avl_tree;
 
+	private boolean dirtyFlag; // Flag used to indicate the contents have been modified. True for dirty, false for clean.
+	private boolean fileExists; // Flag used for if the file being used is brand new or loaded in.
+
+	private String filePath;
+
 	public Model() {
 		System.out.println("Model constructor");
 		tagsIndex = new HashMap<String, LinkedList<Bookmark>>();
 		avl_tree = new AVL_Tree();
+		dirtyFlag = false;
+		fileExists = false;
+		filePath = "";
 	}
 
 	// Getters
@@ -66,6 +74,18 @@ public class Model {
 		return stringTags;
 	}
 
+	public boolean getDirtyFlag() {
+		return this.dirtyFlag;
+	}
+
+	public boolean getFileExistsFlag() {
+		return this.fileExists;
+	}
+
+	public String getCurrentFilePath() {
+		return this.filePath;
+	}
+
 	// Setters
 	public void setBookmarkTitle(final String oldTitle, final String newTitle) throws BookmarkException {
 		Bookmark bookmark = getBookmarkByTitle(oldTitle); // This line throws a BookmarkException
@@ -74,6 +94,7 @@ public class Model {
 		bookmark.setTitle(newTitle);
 		bookmark.setDateModified(LocalDate.now());
 		addNewBookmark(newTitle, bookmark);
+		dirtyFlag = true;
 	}
 
 	// TODO: Determine if this is still needed
@@ -85,12 +106,14 @@ public class Model {
 		Bookmark bookmark = getBookmarkByTitle(title); // This line throws a BookmarkException
 		bookmark.setDescription(newDescription);
 		bookmark.setDateModified(LocalDate.now());
+		dirtyFlag = true;
 	}
 
 	public void setBookmarkURL(final String title, final String newUrl) throws BookmarkException {
 		Bookmark bookmark = getBookmarkByTitle(title); // This line throws a BookmarkException
 		bookmark.setURL(newUrl);
 		bookmark.setDateModified(LocalDate.now());
+		dirtyFlag = true;
 	}
 
 	public void setBookmarkDateModified(final String title, final Date date) { // Not sure if this is needed due to how the other methods are made
@@ -111,12 +134,15 @@ public class Model {
 			LinkedList<Bookmark> bucket = tagsIndex.get(tag);
 			bucket.add(bookmark);
 		}
+
+		dirtyFlag = true;
 	}
 
 	public void addNewTag(final String title, final String newTag) throws BookmarkException {
 		Bookmark bookmark = getBookmarkByTitle(title); // This line throws a BookmarkException
 		bookmark.addNewTag(newTag);
 		bookmark.setDateModified(LocalDate.now());
+		dirtyFlag = true;
 	}
 
 	public void copyToClipboard(final String title) throws BookmarkException {
@@ -137,11 +163,14 @@ public class Model {
 			LinkedList<Bookmark> bucket = tagsIndex.get(tag);
 			bucket.remove(bookmark);
 		}
+
+		dirtyFlag = true;
 	}
 
 	public JSONArray openFile(final String filePath) throws IOException {
 		String jsonFileContents = Files.readString(Paths.get(filePath));
 		JSONArray bookmarkJSONArray = new JSONArray(jsonFileContents);
+		dirtyFlag = false;
 
 		return bookmarkJSONArray;
 	}
@@ -188,6 +217,9 @@ public class Model {
 			Bookmark bkm = processJson(iter.next().toString());
 			addNewBookmark(bkm.getTitle(), bkm);
 		}
+
+		this.fileExists = true;
+		this.filePath = filePath;
 	}
 
 	public LinkedList<Bookmark> getQueueFromAVL() {
@@ -207,6 +239,8 @@ public class Model {
 		FileWriter fileWriter = new FileWriter(filePath);
 		fileWriter.write(jsonContents.toString());
 		fileWriter.close();
+		dirtyFlag = false;
+		fileExists = true;
 	}
 
 	public StringBuilder createJsonArray() {

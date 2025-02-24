@@ -91,6 +91,7 @@ public class Controller {
 		model.addNewBookmark(title, newBookmark);
 
 		this.refreshViewListModel();
+		this.view.determineAndChangeDirtyIndication(this.model.getDirtyFlag());
 	}
 
 	private void editOperation() {
@@ -127,7 +128,7 @@ public class Controller {
 				bookmark.setTagList(newTags);
 			}
 
-			assert !oldTitle.equals(newTitle) : "Titles match but aren't suppose to.";
+			// assert !oldTitle.equals(newTitle) : "Titles match but aren't suppose to.";
 			if (!oldTitle.equals(newTitle)) {
 				// TODO REFACTOR: Move to the Model class
 				this.model.deleteBookmark(bookmark);
@@ -140,6 +141,8 @@ public class Controller {
 				item.setDescription(newDesc);
 				bookmark.setDescription(newDesc);
 			}
+
+			this.view.determineAndChangeDirtyIndication(this.model.getDirtyFlag());
 		} // End try
 		catch(BookmarkException bkException) {
 			System.out.println(bkException.getMessage());
@@ -169,6 +172,7 @@ public class Controller {
 			model.deleteBookmark(bookmark);
 
 			this.refreshViewListModel();
+			this.view.determineAndChangeDirtyIndication(this.model.getDirtyFlag());
 		} // End try
 		catch(BookmarkException bkException) {
 				System.out.println(bkException.getMessage());
@@ -278,7 +282,11 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("open listener fired");
-			JFileChooser fileChooser = view.createFileChooserWindow();
+			JFileChooser fileChooser = view.createFileChooserWindow("open", true);
+
+			if (fileChooser.getSelectedFile() == null) {
+				return;
+			}
 
 			System.out.println(fileChooser.getSelectedFile().getAbsolutePath());
 			try {
@@ -299,9 +307,15 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("save listener fired");
-			JFileChooser fileSaver = view.createFileChooserWindow();
+			File filePath;
+			if (!model.getFileExistsFlag()) {
+				JFileChooser fileSaver = view.createFileChooserWindow("save", model.getFileExistsFlag());
+				filePath = fileSaver.getSelectedFile();
+			}
+			else {
+				filePath = new File(model.getCurrentFilePath());
+			}
 
-			File filePath = fileSaver.getSelectedFile();
 			System.out.println(filePath);
 
 			try {
@@ -313,6 +327,8 @@ public class Controller {
 			catch (Exception ex) {
 				System.out.println(ex.getMessage());
 			}
+
+			view.determineAndChangeDirtyIndication(model.getDirtyFlag());
 		} // End of actionPerformed
 	} // End of menuSaveListener
 
@@ -320,7 +336,7 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("save as listener fired");
-			JFileChooser fileSaver = view.createFileChooserWindow();
+			JFileChooser fileSaver = view.createFileChooserWindow("save as", true);
 
 			File filePath = fileSaver.getSelectedFile();
 			System.out.println(filePath);
@@ -336,6 +352,8 @@ public class Controller {
 			catch (Exception ex) {
 				System.out.println(ex.getMessage());
 			}
+
+			view.determineAndChangeDirtyIndication(model.getDirtyFlag());
 		} // End of actionPerformed
 	} // End menuSaveAsListener
 

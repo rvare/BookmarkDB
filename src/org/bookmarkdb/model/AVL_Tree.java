@@ -105,20 +105,20 @@ public class AVL_Tree {
 		leaf.setHeight(Math.max(height(leaf.getLeftNode()), height(leaf.getRightNode())) + 1);
 		leaf.setBalance(height(leaf.getLeftNode()) - height(leaf.getRightNode()));
 
-		if (leaf.getBalance() >= 2 && leaf.getLeftNode().getBalance() > 0) { // Left heavy, outside
+		if (leaf.getLeftNode() != null && leaf.getBalance() >= 2 && leaf.getLeftNode().getBalance() > 0) { // Left heavy, outside
 			return rotateRight(leaf);
 		}
 
-		if (leaf.getBalance() <= -2 && leaf.getRightNode().getBalance() < 0) { // Right heavy, outside
+		if (leaf.getRightNode() != null && leaf.getBalance() <= -2 && leaf.getRightNode().getBalance() < 0) { // Right heavy, outside
 			return rotateLeft(leaf);
 		}
 
-		if (leaf.getBalance() >= 2 && leaf.getLeftNode().getBalance() < 0) { // Left heavy, inside
+		if (leaf.getLeftNode() != null && leaf.getBalance() >= 2 && leaf.getLeftNode().getBalance() < 0) { // Left heavy, inside
 			leaf.setLeftNode(rotateLeft(leaf.getLeftNode()));
 			return rotateRight(leaf);
 		}
 
-		if (leaf.getBalance() <= -2 && leaf.getLeftNode().getBalance() > 0) { // Right heavy, inside
+		if (leaf.getRightNode() != null && leaf.getBalance() <= -2 && leaf.getRightNode().getBalance() > 0) { // Right heavy, inside
 			leaf.setRightNode(rotateRight(leaf.getRightNode()));
 			return rotateLeft(leaf);
 		}

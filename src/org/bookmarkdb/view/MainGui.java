@@ -57,11 +57,13 @@ public class MainGui {
 
 	private final static int WIDTH = 1000;
 	private final static int HEIGHT = 500;
+	private final static String frameTitle = "Bookmark DB";
+	private final static String frameTitleDirtyIndication = "Bookmark DB *";
 
 	public MainGui() {
 		System.out.println("Viewer constructor");
 		// Create main frame
-		this.mainFrame = new JFrame("Bookmark DB");
+		this.mainFrame = new JFrame(this.frameTitle);
 		this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
@@ -175,6 +177,15 @@ public class MainGui {
 
 	public String getSearchFieldText() {
 		return searchField.getText();
+	}
+
+	public void determineAndChangeDirtyIndication(boolean dirtyFlag) {
+		if (dirtyFlag == true) {
+			this.mainFrame.setTitle(frameTitleDirtyIndication);
+		}
+		else {
+			this.mainFrame.setTitle(frameTitle);
+		}
 	}
 
 	// Add Listeners
@@ -294,9 +305,16 @@ public class MainGui {
 		listModel.addElement(searchResult);
 	}
 
-	public JFileChooser createFileChooserWindow() {
+	public JFileChooser createFileChooserWindow(String choice, boolean existsFlag) {
 		JFileChooser fileSaver = new JFileChooser();
-		fileSaver.showSaveDialog(getMainFrame());
+		
+		if ((choice.equals("save") && !existsFlag) || choice.equals("save as")) {
+			fileSaver.showSaveDialog(getMainFrame());
+		}
+		else {
+			fileSaver.showOpenDialog(getMainFrame());
+		}
+		
 		return fileSaver;
 	}
 
