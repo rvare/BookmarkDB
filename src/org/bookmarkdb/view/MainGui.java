@@ -334,6 +334,9 @@ public class MainGui {
 		FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter("XML", "xml");
 		fileExporter.addChoosableFileFilter(xmlFilter);
 
+		FileNameExtensionFilter opmlFilter = new FileNameExtensionFilter("OPML", "opml");
+		fileExporter.addChoosableFileFilter(opmlFilter);
+
 		fileExporter.showSaveDialog(getMainFrame());
 
 		return fileExporter;
@@ -348,5 +351,10 @@ public class MainGui {
 		TagsDialog tagsDialog = new TagsDialog(tagsList);
 		tagsDialog.setVisible(true);
 		return tagsDialog;
+	}
+
+	public void displayDocumentationDialogWindow() {
+		DocumentationDialog docDialog = new DocumentationDialog();
+		docDialog.setVisible(true);
 	}
 } // End of MainGui

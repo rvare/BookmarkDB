@@ -403,6 +403,7 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("documentation item listener fired");
+			view.displayDocumentationDialogWindow();
 		}
 	}
 
