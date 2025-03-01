@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.awt.datatransfer.StringSelection;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.json.*;
 
@@ -264,4 +266,60 @@ public class Model {
 
 		return jsonContents;
 	}
+
+	public void exportBookmarks(final JFileChooser fileExporter) throws IOException {
+		File exportFilePath = fileExporter.getSelectedFile();
+		FileWriter fileWriter = new FileWriter(exportFilePath);
+		this.clearAVLQueue();
+		LinkedList<Bookmark> inOrderList = this.getQueueFromAVL();
+		assert inOrderList != null : "inOrderList in exportBookmark is null";
+		System.out.println(inOrderList);
+
+		FileNameExtensionFilter fileFilter = (FileNameExtensionFilter)fileExporter.getFileFilter();
+
+		if (fileFilter.getDescription().equals("XML")) {
+			System.out.println("XML");
+		}
+		else if (fileFilter.getDescription().equals("HTML")) {
+			System.out.println("HTML");
+		}
+		else if (fileFilter.getDescription().equals("Markdown")) {
+			System.out.println("Markdown");
+			exportToMarkdown(inOrderList, fileWriter);
+		}
+		else if (fileFilter.getDescription().equals("Text")) {
+			System.out.println("Text");
+			this.exportToText(inOrderList, fileWriter);
+		}
+		else if (fileFilter.getDescription().equals("OPML")) {
+			System.out.println("OPML");
+		}
+
+		fileWriter.close();
+	}
+
+	public void exportToXML() {
+
+	}
+
+	public void exportToHTML(LinkedList<Bookmark> inOrderList, FileWriter fileWriter) throws IOException {
+
+	}
+
+	public void exportToMarkdown(LinkedList<Bookmark> inOrderList, FileWriter fileWriter) throws IOException {
+		for (Bookmark bookmark : inOrderList) {
+			fileWriter.write(String.format("# %s\n", bookmark.getTitle()));
+			fileWriter.write(String.format("- **URL:** %s<br>\n- **Description:** %s<br>\n- **Tags:** %s<br>\n- **Date Created:** %s<br>\n- **Date Modified:** %s<br>\n\n", 
+								bookmark.getURL(), bookmark.getDescription(), bookmark.getTags(),
+								bookmark.getDateCreated(), bookmark.getDateModified()));
+		}
+	}
+
+	public void exportToText(LinkedList<Bookmark> inOrderList, FileWriter fileWriter) throws IOException {
+		for (Bookmark bookmark : inOrderList) {
+			System.out.println(bookmark);
+			fileWriter.write(bookmark.toString() + "\n\n");
+		}
+	}
+
 } // End of Model class

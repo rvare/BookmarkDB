@@ -359,11 +359,24 @@ public class Controller {
 
 	// This listener will be skipped for as it'll be used for a specific feature of the application
 	// TODO REFACTOR: Move to the view class (MainGui)
+	// Current
 	class menuExportListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("export as listener fired");
 			JFileChooser fileExporter = view.createExportChooserWindow();
+			File filePath = fileExporter.getSelectedFile();
+			System.out.println(filePath);
+
+			try {
+				model.exportBookmarks(fileExporter);
+			}
+			catch(IOException ioEx) {
+				System.out.println(ioEx.getMessage());
+			}
+			catch(Exception ex) {
+				System.out.println(ex.getMessage());
+			}
 		}
 	}
 

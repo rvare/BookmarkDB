@@ -322,6 +322,9 @@ public class MainGui {
 		JFileChooser fileExporter = new JFileChooser();
 		fileExporter.setAcceptAllFileFilterUsed(false);
 
+		FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter("XML", "xml");
+		fileExporter.addChoosableFileFilter(xmlFilter);
+
 		FileNameExtensionFilter htmlFilter = new FileNameExtensionFilter("HTML file", "html");
 		fileExporter.addChoosableFileFilter(htmlFilter);
 
@@ -330,9 +333,6 @@ public class MainGui {
 			
 		FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("Text", "txt");
 		fileExporter.addChoosableFileFilter(txtFilter);
-
-		FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter("XML", "xml");
-		fileExporter.addChoosableFileFilter(xmlFilter);
 
 		FileNameExtensionFilter opmlFilter = new FileNameExtensionFilter("OPML", "opml");
 		fileExporter.addChoosableFileFilter(opmlFilter);

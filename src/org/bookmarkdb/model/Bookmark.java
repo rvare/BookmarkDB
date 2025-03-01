@@ -82,7 +82,7 @@ public class Bookmark {
 
 	@Override
 	public String toString() {
-		return String.format("(Title: %s,\nURL: %s,\nDescription: %s,\nTags: %s,\nDate Created: %s,\nDate Modified: %s)",
+		return String.format("Title: %s\nURL: %s\nDescription: %s\nTags: %s\nDate Created: %s\nDate Modified: %s",
 								this.title, this.url, this.description, this.tags, this.dateCreated, this.dateModified);
 	}
 } // End of Bookmark
