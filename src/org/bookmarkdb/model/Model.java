@@ -88,6 +88,10 @@ public class Model {
 		return this.filePath;
 	}
 
+	public void setCurrentFilePath(String cur) {
+		this.filePath = cur;
+	}
+
 	// Setters
 	public void setBookmarkTitle(final String oldTitle, final String newTitle) throws BookmarkException {
 		Bookmark bookmark = getBookmarkByTitle(oldTitle); // This line throws a BookmarkException
@@ -170,6 +174,7 @@ public class Model {
 	}
 
 	public JSONArray openFile(final String filePath) throws IOException {
+		this.filePath = new String(filePath);
 		String jsonFileContents = Files.readString(Paths.get(filePath));
 		JSONArray bookmarkJSONArray = new JSONArray(jsonFileContents);
 		dirtyFlag = false;
@@ -212,6 +217,7 @@ public class Model {
 	}
 
 	public void inputDataFile(final String filePath) throws IOException {
+		this.filePath = new String(filePath);
 		JSONArray jsonFileContents = openFile(filePath); // This line throws an IOException
 
 		Iterator iter = jsonFileContents.iterator();
@@ -221,7 +227,6 @@ public class Model {
 		}
 
 		this.fileExists = true;
-		this.filePath = filePath;
 	}
 
 	public LinkedList<Bookmark> getQueueFromAVL() {
@@ -267,7 +272,7 @@ public class Model {
 		return jsonContents;
 	}
 
-	public void exportBookmarks(final JFileChooser fileExporter) throws IOException {
+	public void exportBookmarks(final JFileChooser fileExporter) throws IOException, JSONException {
 		File exportFilePath = fileExporter.getSelectedFile();
 		FileWriter fileWriter = new FileWriter(exportFilePath);
 		this.clearAVLQueue();
@@ -279,13 +284,14 @@ public class Model {
 
 		if (fileFilter.getDescription().equals("XML")) {
 			System.out.println("XML");
+			this.exportToXML(fileWriter);
 		}
 		else if (fileFilter.getDescription().equals("HTML")) {
 			System.out.println("HTML");
 		}
 		else if (fileFilter.getDescription().equals("Markdown")) {
 			System.out.println("Markdown");
-			exportToMarkdown(inOrderList, fileWriter);
+			this.exportToMarkdown(inOrderList, fileWriter);
 		}
 		else if (fileFilter.getDescription().equals("Text")) {
 			System.out.println("Text");
@@ -298,8 +304,21 @@ public class Model {
 		fileWriter.close();
 	}
 
-	public void exportToXML() {
-
+	public void exportToXML(FileWriter fileWriter) throws IOException, JSONException {
+		System.out.println("In XML export method");
+		assert this.filePath != null : "filePath null";
+		if (!this.filePath.equals("") || this.filePath == null) {
+			System.out.println("Here but not there");
+			JSONArray jsonArray = openFile(this.filePath);
+			fileWriter.write(XML.toString(jsonArray));
+		}
+		else {
+			StringBuilder jsonContents = this.createJsonArray();
+			System.out.println(jsonContents.toString());
+			JSONArray jsonArr = new JSONArray(jsonContents.toString());
+			System.out.println(jsonArr);
+			fileWriter.write(XML.toString(jsonArr));
+		}
 	}
 
 	public void exportToHTML(LinkedList<Bookmark> inOrderList, FileWriter fileWriter) throws IOException {

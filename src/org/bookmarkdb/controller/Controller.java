@@ -14,6 +14,8 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.time.LocalDate;
 
+import org.json.*;
+
 import org.bookmarkdb.model.*;
 import org.bookmarkdb.view.*;
 
@@ -290,6 +292,7 @@ public class Controller {
 
 			System.out.println(fileChooser.getSelectedFile().getAbsolutePath());
 			try {
+				model.setCurrentFilePath(fileChooser.getSelectedFile().getAbsolutePath());
 				model.inputDataFile(fileChooser.getSelectedFile().getAbsolutePath()); // Throws IOException
 				refreshViewListModel();
 			}
@@ -373,6 +376,9 @@ public class Controller {
 			}
 			catch(IOException ioEx) {
 				System.out.println(ioEx.getMessage());
+			}
+			catch(JSONException jsonEx) {
+				System.out.println(jsonEx.getMessage());
 			}
 			catch(Exception ex) {
 				System.out.println(ex.getMessage());
