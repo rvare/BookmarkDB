@@ -325,7 +325,7 @@ public class MainGui {
 		FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter("XML", "xml");
 		fileExporter.addChoosableFileFilter(xmlFilter);
 
-		FileNameExtensionFilter htmlFilter = new FileNameExtensionFilter("HTML file", "html");
+		FileNameExtensionFilter htmlFilter = new FileNameExtensionFilter("HTML", "html");
 		fileExporter.addChoosableFileFilter(htmlFilter);
 
 		FileNameExtensionFilter mdFilter = new FileNameExtensionFilter("Markdown", "md");

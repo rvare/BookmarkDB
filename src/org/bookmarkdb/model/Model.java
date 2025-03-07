@@ -288,6 +288,7 @@ public class Model {
 		}
 		else if (fileFilter.getDescription().equals("HTML")) {
 			System.out.println("HTML");
+			exportToHTML(inOrderList, fileWriter);
 		}
 		else if (fileFilter.getDescription().equals("Markdown")) {
 			System.out.println("Markdown");
@@ -308,7 +309,6 @@ public class Model {
 		System.out.println("In XML export method");
 		assert this.filePath != null : "filePath null";
 		if (!this.filePath.equals("") || this.filePath == null) {
-			System.out.println("Here but not there");
 			JSONArray jsonArray = openFile(this.filePath);
 			fileWriter.write(XML.toString(jsonArray));
 		}
@@ -322,7 +322,17 @@ public class Model {
 	}
 
 	public void exportToHTML(LinkedList<Bookmark> inOrderList, FileWriter fileWriter) throws IOException {
+		System.out.println("in exportToHTML");
+		fileWriter.write("<!DOCTYPE NETSCAPE-Bookmark-file-1>\n");
+		fileWriter.write("<TITLE>Bookmarks</TITLE>\n");
+		fileWriter.write("<DL>\n");
 
+		for (Bookmark b : inOrderList) {
+			fileWriter.write(String.format("<DT><A HREF=\"%s\" ADD_DATE=\"%s\" LAST_MODIFIED=\"%s\">%s</A></DT>\n",
+											b.getURL(), b.getDateCreated(), b.getDateModified(), b.getTitle()));
+		}
+
+		fileWriter.write("</DL>");
 	}
 
 	public void exportToMarkdown(LinkedList<Bookmark> inOrderList, FileWriter fileWriter) throws IOException {
