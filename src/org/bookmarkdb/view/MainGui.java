@@ -334,8 +334,8 @@ public class MainGui {
 		FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("Text", "txt");
 		fileExporter.addChoosableFileFilter(txtFilter);
 
-		FileNameExtensionFilter opmlFilter = new FileNameExtensionFilter("OPML", "opml");
-		fileExporter.addChoosableFileFilter(opmlFilter);
+		// FileNameExtensionFilter opmlFilter = new FileNameExtensionFilter("OPML", "opml");
+		// fileExporter.addChoosableFileFilter(opmlFilter);
 
 		fileExporter.showSaveDialog(getMainFrame());
 

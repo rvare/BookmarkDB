@@ -369,6 +369,9 @@ public class Controller {
 			System.out.println("export as listener fired");
 			JFileChooser fileExporter = view.createExportChooserWindow();
 			File filePath = fileExporter.getSelectedFile();
+			if (filePath == null) {
+				return;
+			}
 			System.out.println(filePath);
 
 			try {

@@ -298,9 +298,9 @@ public class Model {
 			System.out.println("Text");
 			this.exportToText(inOrderList, fileWriter);
 		}
-		else if (fileFilter.getDescription().equals("OPML")) {
-			System.out.println("OPML");
-		}
+		// else if (fileFilter.getDescription().equals("OPML")) {
+		// 	System.out.println("OPML");
+		// }
 
 		fileWriter.close();
 	}
