@@ -10,7 +10,7 @@ A Java application used to manage and keep track of bookmarks.
 	- XML, HTML, Markdown, and pure text.
 - Find bookmarks with a search feature.
 - Give bookmarks tags to easily find them by category.
-	- Not export in HTML.
+	- Not exported in HTML.
 - Add notes to your bookmarks for extra details.
 	- Not exported in HTML.
 - Easily copy bookmark URL with a single click to your clipboard.
@@ -31,4 +31,4 @@ The following is what each button does:
 
 The above functions are also available in the menu bar.
 
-There is an export feature only available in the menu bar. This allows you to export your bookmarks to XML and pure text.
+There is an export feature only available in the menu bar. This allows you to export your bookmarks to XML, HTML, Markdown, and pure text.
