@@ -32,3 +32,10 @@ The following is what each button does:
 The above functions are also available in the menu bar.
 
 There is an export feature only available in the menu bar. This allows you to export your bookmarks to XML, HTML, Markdown, and pure text.
+
+# License
+
+This program is distributed under the GPL Version 3 license.
+
+This program makes use of the package `org.json` by stleary, distributed under a public domain license.
+Link to the repository: https://github.com/stleary/JSON-java
