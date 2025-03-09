@@ -334,6 +334,7 @@ public class MainGui {
 		FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("Text", "txt");
 		fileExporter.addChoosableFileFilter(txtFilter);
 
+		// Future feature
 		// FileNameExtensionFilter opmlFilter = new FileNameExtensionFilter("OPML", "opml");
 		// fileExporter.addChoosableFileFilter(opmlFilter);
 
@@ -356,5 +357,9 @@ public class MainGui {
 	public void displayDocumentationDialogWindow() {
 		DocumentationDialog docDialog = new DocumentationDialog();
 		docDialog.setVisible(true);
+	}
+
+	public void createErrorWindow(String message) {
+		JOptionPane.showMessageDialog(mainFrame, message, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 } // End of MainGui

@@ -147,6 +147,7 @@ public class Controller {
 			this.view.determineAndChangeDirtyIndication(this.model.getDirtyFlag());
 		} // End try
 		catch(BookmarkException bkException) {
+			view.createErrorWindow("Can not edit bookmark. Bookmark may have already change or is missing in file. ");
 			System.out.println(bkException.getMessage());
 		} // End try-catch
 	} // End editOperation
@@ -158,6 +159,7 @@ public class Controller {
 			this.model.copyToClipboard(item.getItemName());
 		}
 		catch(BookmarkException bkException) {
+			view.createErrorWindow("Can not copy bookmark. Bookmark may have changed or is missing in file.");
 			System.out.println(bkException.getMessage());
 		}
 	}
@@ -177,10 +179,12 @@ public class Controller {
 			this.view.determineAndChangeDirtyIndication(this.model.getDirtyFlag());
 		} // End try
 		catch(BookmarkException bkException) {
-				System.out.println(bkException.getMessage());
+			view.createErrorWindow("Can not delete bookmark. Bookmark may have changed, is missing from file, or is has already been deleted.");
+			System.out.println(bkException.getMessage());
 		}
 		catch(Exception ex) {
-				System.out.println(ex.getMessage());
+			view.createErrorWindow("An unknown error has occured. Please check the integrity of the file.");
+			System.out.println(ex.getMessage());
 		} // End try-catch
 	}
 
@@ -229,6 +233,7 @@ public class Controller {
 				view.showSearchResult(new ListMenuItem(bookmark.getTitle(), bookmark.getDescription()));
 			}
 			catch(BookmarkException bkException) {
+				view.createErrorWindow(String.format("Bookmark with title \"%s\" not found", searchQuery));
 				System.out.println(bkException.getMessage());
 			} // End try-catch
 		}
@@ -266,6 +271,7 @@ public class Controller {
 				view.refreshListModel(inOrderList);
 			}
 			catch(NoTagException ntException) {
+				view.createErrorWindow("The tag selected does not exists. Please close and reopen the program to reset its state.");
 				System.out.println(ntException.getMessage());
 			}
 		}
@@ -298,8 +304,10 @@ public class Controller {
 			}
 			catch(IOException ioEx) {
 				System.out.println(ioEx.getMessage());
+				view.createErrorWindow(String.format("Could not open file \"%s\"", fileChooser.getSelectedFile().getAbsolutePath()));
 			}
 			catch(Exception ex) {
+				view.createErrorWindow("An unknown error occurred while opeing the file. Please check the integrity of the file.");
 				System.out.println(ex.getMessage());
 				System.out.println(ex.getStackTrace());
 			}
@@ -325,9 +333,11 @@ public class Controller {
 				model.saveContentsToFile(filePath); // Throws IOException
 			}
 			catch (IOException ioEx) {
+				view.createErrorWindow(String.format("Could not save file \"%s\"", filePath));
 				System.out.println(ioEx.getMessage());
 			}
 			catch (Exception ex) {
+				view.createErrorWindow("An unknown error has occured while saving. Please check the integrity of the file.");
 				System.out.println(ex.getMessage());
 			}
 
@@ -350,9 +360,11 @@ public class Controller {
 				model.saveContentsToFile(filePath); // Throws IOException
 			}
 			catch (IOException ioEx) {
+				view.createErrorWindow(String.format("Could not save file as \"%s\"", filePath));
 				System.out.println(ioEx.getMessage());
 			}
 			catch (Exception ex) {
+				view.createErrorWindow("An unknown error has occured while saving. Please check the integrity of the file.");
 				System.out.println(ex.getMessage());
 			}
 
@@ -378,12 +390,15 @@ public class Controller {
 				model.exportBookmarks(fileExporter);
 			}
 			catch(IOException ioEx) {
+				view.createErrorWindow(String.format("Could not export file as \"%s\"", filePath));
 				System.out.println(ioEx.getMessage());
 			}
 			catch(JSONException jsonEx) {
+				view.createErrorWindow("Could not use the original JSON file. Please check if the file still exists and the integrity of the file.");
 				System.out.println(jsonEx.getMessage());
 			}
 			catch(Exception ex) {
+				view.createErrorWindow("An unknown error has occured while exporting. Please check the integrity of the file.");
 				System.out.println(ex.getMessage());
 			}
 		}
