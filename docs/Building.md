@@ -16,9 +16,34 @@ Compile the project with the `src` directory by running the following:
 javac -cp ../lib/<org.json jar file>; -d ../classes org/bookmarkdb/main/MainBookmarkDb.java
 ```
 
-To run the program, performt the following:
+# 3 Running
+
+To run the program, go to the `classes` directroy and run the following:
 
 ```text
 java -cp .;../lib<org.json jar file> org/bookmarkdb/main/MainBookmarkDb
 ```
 
+# 4 Creating the Jar File
+
+To create the jar file, first create the `manifest.txt` file in the `classes` directory. Be sure to include the following:
+
+```text
+Main-Class: org.bookmarkdb.main.MainBookmarkDb
+Class-Path: ./lib/<org.json jar>
+```
+
+Then run the following inside the `classes` directory:
+
+```text
+jar -cvmf manifest.txt ../bookmarkdb.jar org
+```
+
+# Shipping
+
+If you decide to ship the program out, like share it with someone and such, do the following:
+
+1. Change the Manifest file to reflect that the program's jar file and the org.json jar file will be at the same directory level.
+2. Zip both jars in the same folder.
+
+And that's it.
