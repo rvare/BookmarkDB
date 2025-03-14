@@ -42,7 +42,6 @@ public class Controller {
 	private final Model model;
 
 	public Controller(final Model model, final MainGui view) {
-		System.out.println("Controller constructor");
 		// Model setup
 		this.model = model;
 
@@ -90,8 +89,6 @@ public class Controller {
 
 	// Operations
 	private void newOperation() {
-		System.out.println("new operation");
-
 		FormDialog formDialog = this.view.createFormDialog();
 
 		if (formDialog.canceledHit()) {
@@ -115,7 +112,6 @@ public class Controller {
 	}
 
 	private void editOperation() {
-		System.out.println("edit operation");
 		try {
 			ListMenuItem item = view.getItemList().getSelectedValue();
 			Bookmark bookmark = model.getBookmarkByTitle(item.getItemName()); // Throws exception
@@ -150,7 +146,6 @@ public class Controller {
 
 			// assert !oldTitle.equals(newTitle) : "Titles match but aren't suppose to.";
 			if (!oldTitle.equals(newTitle)) {
-				// TODO REFACTOR: Move to the Model class
 				this.model.deleteBookmark(bookmark);
 				bookmark.setTitle(newTitle);
 				this.model.addNewBookmark(newTitle, bookmark);
@@ -166,24 +161,22 @@ public class Controller {
 		} // End try
 		catch(BookmarkException bkException) {
 			view.createErrorWindow("Can not edit bookmark. Bookmark may have already change or is missing in file. ");
-			System.out.println(bkException.getMessage());
+			// System.out.println(bkException.getMessage());
 		} // End try-catch
 	} // End editOperation
 
 	private void copyOperation() {
-		System.out.println("copy operation");
 		ListMenuItem item = view.getItemList().getSelectedValue();
 		try {
 			this.model.copyToClipboard(item.getItemName());
 		}
 		catch(BookmarkException bkException) {
 			view.createErrorWindow("Can not copy bookmark. Bookmark may have changed or is missing in file.");
-			System.out.println(bkException.getMessage());
+			// System.out.println(bkException.getMessage());
 		}
 	}
 
 	private void deleteOperation() {
-		System.out.println("delete operation");
 		ListMenuItem item = view.getItemList().getSelectedValue();
 		try {
 			JList viewList = view.getItemList();
@@ -198,11 +191,11 @@ public class Controller {
 		} // End try
 		catch(BookmarkException bkException) {
 			view.createErrorWindow("Can not delete bookmark. Bookmark may have changed, is missing from file, or is has already been deleted.");
-			System.out.println(bkException.getMessage());
+			// System.out.println(bkException.getMessage());
 		}
 		catch(Exception ex) {
 			view.createErrorWindow("An unknown error has occured. Please check the integrity of the file.");
-			System.out.println(ex.getMessage());
+			// System.out.println(ex.getMessage());
 		} // End try-catch
 	}
 
@@ -211,7 +204,6 @@ public class Controller {
 	class newButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("new fired");
 			newOperation();
 		}
 	}
@@ -219,7 +211,6 @@ public class Controller {
 	class editButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("edit fired");
 			editOperation();
 		}
 	}
@@ -227,7 +218,6 @@ public class Controller {
 	class copyButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("copy fired");
 			copyOperation();
 		}
 	}
@@ -235,7 +225,6 @@ public class Controller {
 	class deleteButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("delete fired");
 			deleteOperation();
 		}
 	}
@@ -243,7 +232,6 @@ public class Controller {
 	class searchButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("search fired");
 			String searchQuery = view.getSearchFieldText();
 
 			try {
@@ -252,7 +240,7 @@ public class Controller {
 			}
 			catch(BookmarkException bkException) {
 				view.createErrorWindow(String.format("Bookmark with title \"%s\" not found", searchQuery));
-				System.out.println(bkException.getMessage());
+				// System.out.println(bkException.getMessage());
 			} // End try-catch
 		}
 	}
@@ -260,7 +248,6 @@ public class Controller {
 	class homeButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("home fired");
 			refreshViewListModel();
 		}
 	}
@@ -268,7 +255,6 @@ public class Controller {
 	class tagsButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("tags fired");
 			try {
 				String[] tagsList = model.getTags();
 				TagsDialog tagsDialog = view.createTagsDialog(tagsList);
@@ -290,13 +276,12 @@ public class Controller {
 			}
 			catch(NoTagException ntException) {
 				view.createErrorWindow("The tag selected does not exists. Please close and reopen the program to reset its state.");
-				System.out.println(ntException.getMessage());
+				// System.out.println(ntException.getMessage());
 			}
 		}
 	}
 
 	// Menu bar listeners
-	// TODO Implement their functionality
 	class menuNewListener implements ActionListener { // New JSON file is what this is
 		@Override
 		public void actionPerformed(ActionEvent event) {
@@ -307,27 +292,25 @@ public class Controller {
 	class menuOpenListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("open listener fired");
 			JFileChooser fileChooser = view.createFileChooserWindow("open", true);
 
 			if (fileChooser.getSelectedFile() == null) {
 				return;
 			}
 
-			System.out.println(fileChooser.getSelectedFile().getAbsolutePath());
 			try {
 				model.setCurrentFilePath(fileChooser.getSelectedFile().getAbsolutePath());
 				model.inputDataFile(fileChooser.getSelectedFile().getAbsolutePath()); // Throws IOException
 				refreshViewListModel();
 			}
 			catch(IOException ioEx) {
-				System.out.println(ioEx.getMessage());
+				// System.out.println(ioEx.getMessage());
 				view.createErrorWindow(String.format("Could not open file \"%s\"", fileChooser.getSelectedFile().getAbsolutePath()));
 			}
 			catch(Exception ex) {
 				view.createErrorWindow("An unknown error occurred while opeing the file. Please check the integrity of the file.");
-				System.out.println(ex.getMessage());
-				System.out.println(ex.getStackTrace());
+				// System.out.println(ex.getMessage());
+				// System.out.println(ex.getStackTrace());
 			}
 		} // End of actionPerformed
 	} // End of menuOpenListener
@@ -335,7 +318,6 @@ public class Controller {
 	class menuSaveListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("save listener fired");
 			File filePath;
 			if (!model.getFileExistsFlag()) {
 				JFileChooser fileSaver = view.createFileChooserWindow("save", model.getFileExistsFlag());
@@ -345,18 +327,16 @@ public class Controller {
 				filePath = new File(model.getCurrentFilePath());
 			}
 
-			System.out.println(filePath);
-
 			try {
 				model.saveContentsToFile(filePath); // Throws IOException
 			}
 			catch (IOException ioEx) {
 				view.createErrorWindow(String.format("Could not save file \"%s\"", filePath));
-				System.out.println(ioEx.getMessage());
+				// System.out.println(ioEx.getMessage());
 			}
 			catch (Exception ex) {
 				view.createErrorWindow("An unknown error has occured while saving. Please check the integrity of the file.");
-				System.out.println(ex.getMessage());
+				// System.out.println(ex.getMessage());
 			}
 
 			view.determineAndChangeDirtyIndication(model.getDirtyFlag());
@@ -366,11 +346,9 @@ public class Controller {
 	class menuSaveAsListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("save as listener fired");
 			JFileChooser fileSaver = view.createFileChooserWindow("save as", true);
 
 			File filePath = fileSaver.getSelectedFile();
-			System.out.println(filePath);
 
 			StringBuilder jsonContents = model.createJsonArray();
 
@@ -379,11 +357,11 @@ public class Controller {
 			}
 			catch (IOException ioEx) {
 				view.createErrorWindow(String.format("Could not save file as \"%s\"", filePath));
-				System.out.println(ioEx.getMessage());
+				// System.out.println(ioEx.getMessage());
 			}
 			catch (Exception ex) {
 				view.createErrorWindow("An unknown error has occured while saving. Please check the integrity of the file.");
-				System.out.println(ex.getMessage());
+				// System.out.println(ex.getMessage());
 			}
 
 			view.determineAndChangeDirtyIndication(model.getDirtyFlag());
@@ -391,33 +369,29 @@ public class Controller {
 	} // End menuSaveAsListener
 
 	// This listener will be skipped for as it'll be used for a specific feature of the application
-	// TODO REFACTOR: Move to the view class (MainGui)
-	// Current
 	class menuExportListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("export as listener fired");
 			JFileChooser fileExporter = view.createExportChooserWindow();
 			File filePath = fileExporter.getSelectedFile();
 			if (filePath == null) {
 				return;
 			}
-			System.out.println(filePath);
 
 			try {
 				model.exportBookmarks(fileExporter);
 			}
 			catch(IOException ioEx) {
 				view.createErrorWindow(String.format("Could not export file as \"%s\"", filePath));
-				System.out.println(ioEx.getMessage());
+				// System.out.println(ioEx.getMessage());
 			}
 			catch(JSONException jsonEx) {
 				view.createErrorWindow("Could not use the original JSON file. Please check if the file still exists and the integrity of the file.");
-				System.out.println(jsonEx.getMessage());
+				// System.out.println(jsonEx.getMessage());
 			}
 			catch(Exception ex) {
 				view.createErrorWindow("An unknown error has occured while exporting. Please check the integrity of the file.");
-				System.out.println(ex.getMessage());
+				// System.out.println(ex.getMessage());
 			}
 		}
 	}
@@ -425,7 +399,6 @@ public class Controller {
 	class menuCopyListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("copy listener fired");
 			copyOperation();
 		}
 	}
@@ -433,7 +406,6 @@ public class Controller {
 	class menuNewItemListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("new item listener fired");
 			newOperation();
 		}
 	}
@@ -441,7 +413,6 @@ public class Controller {
 	class menuEditItemListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("edit item listener fired");
 			editOperation();
 		}
 	}
@@ -449,7 +420,6 @@ public class Controller {
 	class menuDeleteItemListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("delete item listener fired");
 			deleteOperation();
 		}
 	}
@@ -457,7 +427,6 @@ public class Controller {
 	class menuDocumentationItemListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("documentation item listener fired");
 			view.displayDocumentationDialogWindow();
 		}
 	}
@@ -465,7 +434,6 @@ public class Controller {
 	class menuAboutItemListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("about item listener fired");
 			view.displayAboutDialogWindow();
 		}
 	}
@@ -474,7 +442,6 @@ public class Controller {
 	// Note: The following code was made using this reference
 	// https://stackoverflow.com/questions/13800775/find-selected-item-of-a-jlist-and-display-it-in-real-time
 	class listListener implements ListSelectionListener {
-		// TODO CLEAN: Refactor for better reading
 		@Override
 		public void valueChanged(ListSelectionEvent arg0) {
 			if (!arg0.getValueIsAdjusting()) {

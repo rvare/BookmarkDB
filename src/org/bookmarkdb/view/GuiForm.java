@@ -45,7 +45,6 @@ public class GuiForm extends JFrame { // TODO: Change to JDialogue because it'll
 	private JTextArea textAreaDescription;
 
 	public GuiForm() {
-		System.out.println("GuiForm constructor");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		// Form elements: fields and labels

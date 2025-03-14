@@ -22,8 +22,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-// TODO CLEAN: Remove print statements
-
 public class Bookmark {
 	private String url;
 	private String title;

@@ -47,7 +47,6 @@ public class Model {
 	private String filePath;
 
 	public Model() {
-		System.out.println("Model constructor");
 		tagsIndex = new HashMap<String, LinkedList<Bookmark>>();
 		avl_tree = new AVL_Tree();
 		dirtyFlag = false;
@@ -76,7 +75,7 @@ public class Model {
 		return node.getBookmark();
 	}
 
-	public void getAllBookmarks() { // TODO Implement such that it returns something that JList can use
+	public void getAllBookmarks() {
 		avl_tree.inOrderTraversal(avl_tree.getRoot());
 	}
 
@@ -119,11 +118,6 @@ public class Model {
 		bookmark.setDateModified(LocalDate.now());
 		addNewBookmark(newTitle, bookmark);
 		dirtyFlag = true;
-	}
-
-	// TODO: Determine if this is still needed
-	public void setBookmarkTags(final String title, final String[] tags) { // Not sure if this is needed
-
 	}
 
 	public void setBookmarkDescription(final String title, final String newDescription) throws BookmarkException {
@@ -176,13 +170,11 @@ public class Model {
 		clipboard.setContents(urlString, urlString);
 	}
 
-	// TODO: Rewrite to use the Bookmark object in the method argument because it'll be easier to use remove() with linked list
 	public void deleteBookmark(final Bookmark bookmark) {
 		avl_tree.deleteNode(avl_tree.getRoot(), bookmark.getTitle());
 
 		ArrayList<String> bookmarkTags = bookmark.getTags();
 
-		// TODO: Fix this so it doesn't remove a tag when there's a list there. Only remove when null.
 		for (String tag : bookmarkTags) { 
 			LinkedList<Bookmark> bucket = tagsIndex.get(tag);
 			bucket.remove(bookmark);
@@ -257,9 +249,8 @@ public class Model {
 	}
 
 	public void saveContentsToFile(final File filePath) throws IOException {
-		System.out.println("saveConentsToFile");
 		StringBuilder jsonContents = createJsonArray();
-		System.out.println(jsonContents.toString());
+		// System.out.println(jsonContents.toString());
 
 		FileWriter fileWriter = new FileWriter(filePath);
 		fileWriter.write(jsonContents.toString());
@@ -296,35 +287,28 @@ public class Model {
 		this.clearAVLQueue();
 		LinkedList<Bookmark> inOrderList = this.getQueueFromAVL();
 		assert inOrderList != null : "inOrderList in exportBookmark is null";
-		System.out.println(inOrderList);
 
 		FileNameExtensionFilter fileFilter = (FileNameExtensionFilter)fileExporter.getFileFilter();
 
 		if (fileFilter.getDescription().equals("XML")) {
-			System.out.println("XML");
 			this.exportToXML(fileWriter);
 		}
 		else if (fileFilter.getDescription().equals("HTML")) {
-			System.out.println("HTML");
 			exportToHTML(inOrderList, fileWriter);
 		}
 		else if (fileFilter.getDescription().equals("Markdown")) {
-			System.out.println("Markdown");
 			this.exportToMarkdown(inOrderList, fileWriter);
 		}
 		else if (fileFilter.getDescription().equals("Text")) {
-			System.out.println("Text");
 			this.exportToText(inOrderList, fileWriter);
 		}
 		// else if (fileFilter.getDescription().equals("OPML")) {
-		// 	System.out.println("OPML");
 		// }
 
 		fileWriter.close();
 	}
 
 	public void exportToXML(FileWriter fileWriter) throws IOException, JSONException {
-		System.out.println("In XML export method");
 		assert this.filePath != null : "filePath null";
 		if (!this.filePath.equals("") || this.filePath == null) {
 			JSONArray jsonArray = openFile(this.filePath);
@@ -332,15 +316,12 @@ public class Model {
 		}
 		else {
 			StringBuilder jsonContents = this.createJsonArray();
-			System.out.println(jsonContents.toString());
 			JSONArray jsonArr = new JSONArray(jsonContents.toString());
-			System.out.println(jsonArr);
 			fileWriter.write(XML.toString(jsonArr));
 		}
 	}
 
 	public void exportToHTML(LinkedList<Bookmark> inOrderList, FileWriter fileWriter) throws IOException {
-		System.out.println("in exportToHTML");
 		fileWriter.write("<!DOCTYPE NETSCAPE-Bookmark-file-1>\n");
 		fileWriter.write("<TITLE>Bookmarks</TITLE>\n");
 		fileWriter.write("<DL>\n");
@@ -364,7 +345,6 @@ public class Model {
 
 	public void exportToText(LinkedList<Bookmark> inOrderList, FileWriter fileWriter) throws IOException {
 		for (Bookmark bookmark : inOrderList) {
-			System.out.println(bookmark);
 			fileWriter.write(bookmark.toString() + "\n\n");
 		}
 	}

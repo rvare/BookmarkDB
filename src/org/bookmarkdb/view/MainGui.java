@@ -79,7 +79,6 @@ public class MainGui {
 	private final static String frameTitleDirtyIndication = "Bookmark DB *";
 
 	public MainGui() {
-		System.out.println("Viewer constructor");
 		// Create main frame
 		this.mainFrame = new JFrame(this.frameTitle);
 		this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -159,7 +158,6 @@ public class MainGui {
 
 		this.mainFrame.getContentPane().add(BorderLayout.NORTH, buttonPanel);
 
-		// TODO: Clean up for better reading
 		this.listModel = new DefaultListModel<ListMenuItem>();
 
 		this.itemList = new JList<ListMenuItem>();
@@ -167,7 +165,6 @@ public class MainGui {
 		this.mainFrame.getContentPane().add(BorderLayout.CENTER, itemList);
 
 		// Create description area
-		// TODO: Clean this up for better reading
 		this.descriptionBox = new JTextArea(10, 10); // Sets how many characters by height and width, not by pixels
 		this.descriptionPanel = new JPanel();
 		JScrollPane descriptionBoxScroller = new JScrollPane(descriptionBox);
@@ -306,7 +303,6 @@ public class MainGui {
 	}
 
 	public void refreshListModel(final LinkedList<ListMenuItem> inOrderList) {
-		System.out.println("refreshListModel");
 		DefaultListModel<ListMenuItem> listModel = this.getListModel();
 		listModel.removeAllElements();
 		listModel.clear();
