@@ -98,14 +98,12 @@ public class GuiForm extends JFrame { // TODO: Change to JDialogue because it'll
 	// NOTE: This class will go to the controller and handle the saving of the data but the button that constructs the form won't do that
 	class saveListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("GuiForm save button fired");
 			dispose();
 		}
 	}
 
 	class cancelListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("GuiForm cancel button fired");
 			dispose();
 		}
 	}

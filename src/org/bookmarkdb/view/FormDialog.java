@@ -50,7 +50,6 @@ public class FormDialog extends JDialog {
 	private final int HEIGHT = 300;
 
 	public FormDialog() {
-		System.out.println("GuiForm constructor");
 		// setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		// Form elements: fields and labels
@@ -138,7 +137,6 @@ public class FormDialog extends JDialog {
 		String tagsString = String.format("%s", tags);
 		tagsString = tagsString.replace("[", " ");
 		tagsString = tagsString.replace("]", " ");
-		System.out.println(tagsString.trim());
 		this.textFieldTags.setText(tagsString.trim());
 	}
 
@@ -148,7 +146,6 @@ public class FormDialog extends JDialog {
 	// NOTE: This class will go to the controller and handle the saving of the data but the button that constructs the form won't do that
 	class saveListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("FormDialog save button fired");
 			cancelFlag = false; // The reason this is here is to ensure that it's false when saved, but it might be too redundant
 			dispose();
 		}
@@ -156,7 +153,6 @@ public class FormDialog extends JDialog {
 
 	class cancelListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("FormDialog cancel button fired");
 			cancelFlag = true;
 			dispose();
 		}

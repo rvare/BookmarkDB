@@ -27,7 +27,6 @@ import java.util.*;
 
 public class DocumentationDialog extends JDialog {
 	public DocumentationDialog() {
-		System.out.println("Doc Dialog");
 		this.setTitle("Documentation");
 							// This is a ruler for the window to keep things consistant. Each pipe is 5 characters.
 							//--|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|

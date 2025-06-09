@@ -84,7 +84,6 @@ public class TagsDialog extends JDialog {
 	class okayListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("OK hit");
 			cancelFlag = false;
 			dispose();
 		}
@@ -93,7 +92,6 @@ public class TagsDialog extends JDialog {
 	class cancelListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("Cancel hit");
 			cancelFlag = true;
 			dispose();
 		}
@@ -103,11 +101,9 @@ public class TagsDialog extends JDialog {
 		@Override
 		public void valueChanged(ListSelectionEvent selEvent) {
 			if (!selEvent.getValueIsAdjusting()) {
-				System.out.println("Selected tag");
 				String item = tagList.getSelectedValue();
 				assert item != null : "Selected tag item is null.";
 				selectedTag = item;
-				System.out.println(selectedTag);
 			}
 		}
 	}

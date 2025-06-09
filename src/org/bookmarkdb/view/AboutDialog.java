@@ -30,7 +30,6 @@ import java.util.*;
 
 public class AboutDialog extends JDialog {
 	public AboutDialog() {
-		System.out.println("AboutDialog constructor");
 		this.setTitle("About");
 		JLabel applicationTitle = new JLabel("BookmarkDb");
 		applicationTitle.setAlignmentX(Component.CENTER_ALIGNMENT);

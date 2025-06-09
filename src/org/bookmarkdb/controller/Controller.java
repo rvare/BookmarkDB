@@ -285,7 +285,7 @@ public class Controller {
 	class menuNewListener implements ActionListener { // New JSON file is what this is
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("new listener fired");
+			// System.out.println("new listener fired");
 		}
 	}
 
